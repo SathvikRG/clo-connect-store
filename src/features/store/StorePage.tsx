@@ -10,7 +10,7 @@ import ContentGrid from './components/ContentGrid';
 const StorePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { filteredItems, ui } = useSelector((state: RootState) => state.store);
-  const { pricingOptions, keyword } = useSelector((state: RootState) => state.filters);
+  const { pricingOptions, keyword, sortBy, priceRange } = useSelector((state: RootState) => state.filters);
   const { saveToURL } = usePersistence();
 
   // Fetch initial data on component mount
@@ -20,8 +20,8 @@ const StorePage: React.FC = () => {
 
   // Filter items when filters change
   useEffect(() => {
-    dispatch(filterItems({ pricingOptions, keyword }));
-  }, [dispatch, pricingOptions, keyword]);
+    dispatch(filterItems({ pricingOptions, keyword, sortBy, priceRange }));
+  }, [dispatch, pricingOptions, keyword, sortBy, priceRange]);
 
   // Save filters to URL when they change
   useEffect(() => {

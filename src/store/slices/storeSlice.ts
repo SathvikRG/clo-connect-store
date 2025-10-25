@@ -48,15 +48,24 @@ const storeSlice = createSlice({
       state.error = null;
     },
     
-    // Filter items based on pricing options and keyword
-    filterItems: (state, action: PayloadAction<{ pricingOptions: PricingOption[]; keyword: string }>) => {
-      const { pricingOptions, keyword } = action.payload;
+    // Filter items based on pricing options, keyword, sort, and price range
+    filterItems: (state, action: PayloadAction<{ pricingOptions: PricingOption[]; keyword: string; sortBy: string; priceRange: [number, number] }>) => {
+      const { pricingOptions, keyword, sortBy, priceRange } = action.payload;
       
       let filtered = state.items;
       
       // Filter by pricing options
       if (pricingOptions.length > 0) {
-        filtered = filtered.filter(item => pricingOptions.includes(item.pricingOption));
+        filtered = filtered.filter(item => {
+          if (!pricingOptions.includes(item.pricingOption)) return false;
+          
+          // If PAID option is selected, also filter by price range
+          if (item.pricingOption === PricingOption.PAID) {
+            return item.price >= priceRange[0] && item.price <= priceRange[1];
+          }
+          
+          return true;
+        });
       }
       
       // Filter by keyword (search in title and creator)
@@ -67,6 +76,20 @@ const storeSlice = createSlice({
           item.creator.toLowerCase().includes(searchTerm)
         );
       }
+      
+      // Sort items
+      filtered = [...filtered].sort((a, b) => {
+        switch (sortBy) {
+          case 'itemName':
+            return a.title.localeCompare(b.title);
+          case 'higherPrice':
+            return b.price - a.price;
+          case 'lowerPrice':
+            return a.price - b.price;
+          default:
+            return 0;
+        }
+      });
       
       state.filteredItems = filtered;
     },

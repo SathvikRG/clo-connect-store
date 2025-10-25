@@ -1,12 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState } from '../../../store';
-import { togglePricingOption, resetFilters, setKeyword } from '../../../store/slices/filterSlice';
-import { PricingOption } from '../../../types/index';
+import { togglePricingOption, resetFilters, setKeyword, setSortBy, setPriceRange } from '../../../store/slices/filterSlice';
+import { PricingOption, SortOption } from '../../../types/index';
 
 const SearchAndFilters: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { pricingOptions, keyword } = useSelector((state: RootState) => state.filters);
+  const { pricingOptions, keyword, sortBy, priceRange } = useSelector((state: RootState) => state.filters);
 
   const handlePricingToggle = (option: PricingOption) => {
     dispatch(togglePricingOption(option));
@@ -18,6 +18,16 @@ const SearchAndFilters: React.FC = () => {
 
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setKeyword(e.target.value));
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setSortBy(e.target.value as SortOption));
+  };
+
+  const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    const newRange: [number, number] = [Math.min(priceRange[0], value), Math.max(priceRange[1], value)];
+    dispatch(setPriceRange(newRange));
   };
 
   return (
@@ -84,7 +94,38 @@ const SearchAndFilters: React.FC = () => {
           </div>
         </div>
         
-        <div className="flex justify-end">
+        {/* Pricing Slider - Only show when Paid option is selected */}
+        {pricingOptions.includes(PricingOption.PAID) && (
+          <div className="mb-4">
+            <label className="text-sm text-white mb-2 block">Price Range: ${priceRange[0]} - ${priceRange[1]}</label>
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-300 text-sm">$0</span>
+              <input
+                type="range"
+                min="0"
+                max="999"
+                value={priceRange[1]}
+                onChange={handlePriceRangeChange}
+                className="flex-1 accent-accent-green"
+              />
+              <span className="text-gray-300 text-sm">$999+</span>
+            </div>
+          </div>
+        )}
+        
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <label className="text-accent-green text-sm">Sort by:</label>
+            <select
+              value={sortBy}
+              onChange={handleSortChange}
+              className="bg-dark-bg border border-gray-600 rounded px-3 py-1 text-white text-sm focus:outline-none focus:border-accent-green"
+            >
+              <option value={SortOption.ITEM_NAME}>Item Name</option>
+              <option value={SortOption.HIGHER_PRICE}>Higher Price</option>
+              <option value={SortOption.LOWER_PRICE}>Lower Price</option>
+            </select>
+          </div>
           <button 
             onClick={handleReset}
             className="text-gray-400 hover:text-white transition-colors"
