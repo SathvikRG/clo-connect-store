@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import { type StoreItem, type UIState } from '../../types/index';
+import { type StoreItem, type UIState, type PricingOption } from '../../types/index';
 import { storeApi } from '../../services/api';
 
 // Async thunk for fetching store items (like Pinia actions)
@@ -48,9 +48,27 @@ const storeSlice = createSlice({
       state.error = null;
     },
     
-    // Update filtered items (called by filter slice)
-    updateFilteredItems: (state, action: PayloadAction<StoreItem[]>) => {
-      state.filteredItems = action.payload;
+    // Filter items based on pricing options and keyword
+    filterItems: (state, action: PayloadAction<{ pricingOptions: PricingOption[]; keyword: string }>) => {
+      const { pricingOptions, keyword } = action.payload;
+      
+      let filtered = state.items;
+      
+      // Filter by pricing options
+      if (pricingOptions.length > 0) {
+        filtered = filtered.filter(item => pricingOptions.includes(item.pricingOption));
+      }
+      
+      // Filter by keyword (search in title and creator)
+      if (keyword.trim()) {
+        const searchTerm = keyword.toLowerCase().trim();
+        filtered = filtered.filter(item => 
+          item.title.toLowerCase().includes(searchTerm) ||
+          item.creator.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      state.filteredItems = filtered;
     },
     
     // Clear error
@@ -75,6 +93,8 @@ const storeSlice = createSlice({
             index === self.findIndex(t => t.id === item.id)
           );
           state.items = uniqueItems;
+          // Initialize filtered items with all items
+          state.filteredItems = uniqueItems;
         } else {
           // Subsequent pages - append items and deduplicate
           const allItems = [...state.items, ...action.payload.items];
@@ -82,6 +102,8 @@ const storeSlice = createSlice({
             index === self.findIndex(t => t.id === item.id)
           );
           state.items = uniqueItems;
+          // Update filtered items with new items
+          state.filteredItems = uniqueItems;
         }
         
         state.ui.currentPage += 1;
@@ -93,5 +115,5 @@ const storeSlice = createSlice({
   },
 });
 
-export const { resetStore, updateFilteredItems, clearError } = storeSlice.actions;
+export const { resetStore, filterItems, clearError } = storeSlice.actions;
 export default storeSlice.reducer;

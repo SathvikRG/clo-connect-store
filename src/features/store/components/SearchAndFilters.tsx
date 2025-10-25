@@ -1,6 +1,25 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { type AppDispatch, type RootState } from '../../../store';
+import { togglePricingOption, resetFilters, setKeyword } from '../../../store/slices/filterSlice';
+import { PricingOption } from '../../../types/index';
 
 const SearchAndFilters: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { pricingOptions, keyword } = useSelector((state: RootState) => state.filters);
+
+  const handlePricingToggle = (option: PricingOption) => {
+    dispatch(togglePricingOption(option));
+  };
+
+  const handleReset = () => {
+    dispatch(resetFilters());
+  };
+
+  const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setKeyword(e.target.value));
+  };
+
   return (
     <div className="bg-dark-panel border border-accent-green rounded-lg p-6">
       <h2 className="text-lg font-semibold text-gray-300 mb-4">
@@ -13,6 +32,8 @@ const SearchAndFilters: React.FC = () => {
           <input
             type="text"
             placeholder="Find the Items you're lookng for"
+            value={keyword}
+            onChange={handleKeywordChange}
             className="w-full bg-dark-bg border border-gray-600 rounded-lg px-4 py-3 pr-12 text-white placeholder-gray-400 focus:outline-none focus:border-accent-green"
           />
           <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
@@ -34,22 +55,40 @@ const SearchAndFilters: React.FC = () => {
           <label className="text-sm text-gray-300 mb-2 block">Pricing Option</label>
           <div className="flex space-x-4">
             <label className="flex items-center">
-              <input type="checkbox" className="mr-2 accent-accent-green" />
+              <input 
+                type="checkbox" 
+                className="mr-2 accent-accent-green"
+                checked={pricingOptions.includes(PricingOption.PAID)}
+                onChange={() => handlePricingToggle(PricingOption.PAID)}
+              />
               <span className="text-gray-300">Paid</span>
             </label>
             <label className="flex items-center">
-              <input type="checkbox" className="mr-2 accent-accent-green" />
+              <input 
+                type="checkbox" 
+                className="mr-2 accent-accent-green"
+                checked={pricingOptions.includes(PricingOption.FREE)}
+                onChange={() => handlePricingToggle(PricingOption.FREE)}
+              />
               <span className="text-gray-300">Free</span>
             </label>
             <label className="flex items-center">
-              <input type="checkbox" className="mr-2 accent-accent-green" />
+              <input 
+                type="checkbox" 
+                className="mr-2 accent-accent-green"
+                checked={pricingOptions.includes(PricingOption.VIEW_ONLY)}
+                onChange={() => handlePricingToggle(PricingOption.VIEW_ONLY)}
+              />
               <span className="text-gray-300">View Only</span>
             </label>
           </div>
         </div>
         
         <div className="flex justify-end">
-          <button className="text-gray-400 hover:text-white transition-colors">
+          <button 
+            onClick={handleReset}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
             RESET
           </button>
         </div>
