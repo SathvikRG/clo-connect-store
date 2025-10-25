@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState } from '../../store';
 import { fetchStoreItems, filterItems } from '../../store/slices/storeSlice';
+import { usePersistence } from '../../hooks/usePersistence';
 import Header from './components/Header';
 import SearchAndFilters from './components/SearchAndFilters';
 import ContentGrid from './components/ContentGrid';
@@ -10,6 +11,7 @@ const StorePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { filteredItems, ui } = useSelector((state: RootState) => state.store);
   const { pricingOptions, keyword } = useSelector((state: RootState) => state.filters);
+  const { saveToURL } = usePersistence();
 
   // Fetch initial data on component mount
   useEffect(() => {
@@ -20,6 +22,11 @@ const StorePage: React.FC = () => {
   useEffect(() => {
     dispatch(filterItems({ pricingOptions, keyword }));
   }, [dispatch, pricingOptions, keyword]);
+
+  // Save filters to URL when they change
+  useEffect(() => {
+    saveToURL(pricingOptions, keyword);
+  }, [pricingOptions, keyword, saveToURL]);
 
   return (
     <div className="min-h-screen bg-dark-bg">

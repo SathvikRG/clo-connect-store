@@ -1,5 +1,6 @@
 import React from 'react';
 import { type StoreItem } from '../../../types/index';
+import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 
 interface ContentGridProps {
   items: StoreItem[];
@@ -7,6 +8,7 @@ interface ContentGridProps {
 }
 
 const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
+  const { ref, isLoading: infiniteLoading, hasMore } = useInfiniteScroll();
   const getPricingDisplay = (item: StoreItem) => {
     switch (item.pricingOption) {
       case 0: // PAID
@@ -77,6 +79,27 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
           </div>
         ))}
       </div>
+      
+      {/* Infinite Scroll Trigger */}
+      {hasMore && (
+        <div ref={ref} className="flex justify-center py-8">
+          {infiniteLoading ? (
+            <div className="flex items-center space-x-2">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-accent-green"></div>
+              <span className="text-gray-400">Loading more items...</span>
+            </div>
+          ) : (
+            <div className="text-gray-400">Scroll down to load more</div>
+          )}
+        </div>
+      )}
+      
+      {/* End of results */}
+      {!hasMore && items.length > 0 && (
+        <div className="flex justify-center py-8">
+          <span className="text-gray-400">No more items to load</span>
+        </div>
+      )}
     </div>
   );
 };
