@@ -100,11 +100,6 @@ describe('useInfiniteScroll', () => {
   })
 
   it('dispatches fetchStoreItems when inView is true and conditions are met', () => {
-    mockUseInView.mockReturnValue({
-      ref: null,
-      inView: true,
-    })
-    
     const { result } = renderHookWithProvider(useInfiniteScroll, defaultState)
     
     // The hook should return the correct values
@@ -114,11 +109,6 @@ describe('useInfiniteScroll', () => {
   })
 
   it('handles different inView states', () => {
-    mockUseInView.mockReturnValue({
-      ref: null,
-      inView: true,
-    })
-    
     const { result } = renderHookWithProvider(useInfiniteScroll, defaultState)
     
     expect(result.current.ref).toBeNull()

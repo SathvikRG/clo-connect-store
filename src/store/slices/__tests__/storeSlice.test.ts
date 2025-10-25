@@ -293,7 +293,7 @@ describe('storeSlice', () => {
       const action = {
         type: fetchStoreItems.fulfilled.type,
         payload: {
-          items: [mockItems[1]],
+          items: [mockItems[1], mockItems[2]],
           hasMore: false,
         },
       }

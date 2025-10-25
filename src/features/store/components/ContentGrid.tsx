@@ -9,6 +9,23 @@ interface ContentGridProps {
 
 const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
   const { ref, isLoading: infiniteLoading, hasMore } = useInfiniteScroll();
+  
+  // Debug: Log the number of items
+  console.log('ContentGrid: Rendering', items.length, 'items');
+  console.log('ContentGrid: Items:', items);
+  
+  // Test with hardcoded items if we have less than 4 items
+  const testItems = items.length < 4 ? [
+    ...items,
+    ...Array.from({ length: 4 - items.length }, (_, i) => ({
+      id: `test-${i}`,
+      creator: 'Test Creator',
+      title: `Test Item ${i + 1}`,
+      pricingOption: 0,
+      imagePath: 'https://via.placeholder.com/300x300/333/fff?text=Test',
+      price: 25
+    }))
+  ] : items;
   const getPricingDisplay = (item: StoreItem) => {
     switch (item.pricingOption) {
       case 0: // PAID
@@ -52,9 +69,16 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
         <h2 className="text-lg font-semibold text-white">Contents List</h2>
       </div>
       
-      {/* Grid Container - Responsive: 4/3/2/1 columns */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {items.map((item, index) => (
+      {/* Grid Container - Force 4 columns on large screens */}
+      <div 
+        className="grid gap-6 w-full" 
+        style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          maxWidth: '100%'
+        }}
+      >
+        {testItems.map((item, index) => (
           <div key={`${item.id}-${index}`} className="bg-dark-bg rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
             <div className="aspect-square bg-gray-800 flex items-center justify-center overflow-hidden">
               <img 

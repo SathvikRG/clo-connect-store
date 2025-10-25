@@ -8,14 +8,12 @@ import filterReducer from '../../../../store/slices/filterSlice'
 import { StoreItem, PricingOption } from '../../../../types/index'
 
 // Mock the useInfiniteScroll hook
-const mockUseInfiniteScroll = vi.fn(() => ({
-  ref: null,
-  isLoading: false,
-  hasMore: true,
-}))
-
 vi.mock('../../../../hooks/useInfiniteScroll', () => ({
-  useInfiniteScroll: mockUseInfiniteScroll,
+  useInfiniteScroll: vi.fn(() => ({
+    ref: null,
+    isLoading: false,
+    hasMore: true,
+  })),
 }))
 
 const createMockStore = (initialState = {}) => {
@@ -161,9 +159,10 @@ describe('ContentGrid', () => {
     expect(screen.getByText('Scroll down to load more')).toBeInTheDocument()
   })
 
-  it('shows end of results when hasMore is false', () => {
+  it('shows end of results when hasMore is false', async () => {
     // Mock the useInfiniteScroll hook to return hasMore: false
-    mockUseInfiniteScroll.mockReturnValue({
+    const { useInfiniteScroll } = await import('../../../../hooks/useInfiniteScroll')
+    vi.mocked(useInfiniteScroll).mockReturnValue({
       ref: null,
       isLoading: false,
       hasMore: false,

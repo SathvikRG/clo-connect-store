@@ -13,6 +13,10 @@ const StorePage: React.FC = () => {
   const { pricingOptions, keyword, sortBy, priceRange } = useSelector((state: RootState) => state.filters);
   const { saveToURL } = usePersistence();
 
+  // Debug: Log the filtered items
+  console.log('StorePage: filteredItems length:', filteredItems.length);
+  console.log('StorePage: filteredItems:', filteredItems);
+
   // Fetch initial data on component mount
   useEffect(() => {
     dispatch(fetchStoreItems({ page: 1, limit: 20 }));
@@ -25,8 +29,8 @@ const StorePage: React.FC = () => {
 
   // Save filters to URL when they change
   useEffect(() => {
-    saveToURL(pricingOptions, keyword);
-  }, [pricingOptions, keyword, saveToURL]);
+    saveToURL(pricingOptions, keyword, sortBy, priceRange);
+  }, [pricingOptions, keyword, sortBy, priceRange, saveToURL]);
 
   return (
     <div className="min-h-screen bg-dark-bg">
@@ -34,7 +38,7 @@ const StorePage: React.FC = () => {
       <Header />
       
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-6 space-y-6">
+      <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
         {/* Search and Filters Section */}
         <SearchAndFilters />
         

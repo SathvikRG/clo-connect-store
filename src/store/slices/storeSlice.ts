@@ -60,7 +60,7 @@ const storeSlice = createSlice({
           if (!pricingOptions.includes(item.pricingOption)) return false;
           
           // If PAID option is selected, also filter by price range
-          if (item.pricingOption === PricingOption.PAID) {
+          if (item.pricingOption === 0) { // PricingOption.PAID
             return item.price >= priceRange[0] && item.price <= priceRange[1];
           }
           
