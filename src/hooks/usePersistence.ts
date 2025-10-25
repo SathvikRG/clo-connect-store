@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { type AppDispatch } from '../store';
-import { setPricingOptions, setKeyword } from '../store/slices/filterSlice';
-import { PricingOption } from '../types/index';
+import { setPricingOptions, setKeyword, setSortBy, setPriceRange } from '../store/slices/filterSlice';
+import { PricingOption, SortOption } from '../types/index';
 
 export const usePersistence = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,10 +27,36 @@ export const usePersistence = () => {
     if (keywordParam) {
       dispatch(setKeyword(keywordParam));
     }
+
+    // Load sortBy from URL
+    const sortByParam = urlParams.get('sortBy');
+    if (sortByParam && Object.values(SortOption).includes(sortByParam as SortOption)) {
+      dispatch(setSortBy(sortByParam as SortOption));
+    }
+
+    // Load price range from URL
+    const priceMinParam = urlParams.get('priceMin');
+    const priceMaxParam = urlParams.get('priceMax');
+    if (priceMinParam && priceMaxParam) {
+      try {
+        const min = parseInt(priceMinParam);
+        const max = parseInt(priceMaxParam);
+        if (!isNaN(min) && !isNaN(max)) {
+          dispatch(setPriceRange([min, max]));
+        }
+      } catch (error) {
+        console.error('Failed to parse price range from URL:', error);
+      }
+    }
   }, [dispatch]);
 
   // Save state to URL when filters change
-  const saveToURL = (pricingOptions: PricingOption[], keyword: string) => {
+  const saveToURL = useCallback((
+    pricingOptions: PricingOption[],
+    keyword: string,
+    sortBy: SortOption,
+    priceRange: [number, number]
+  ) => {
     const url = new URL(window.location.href);
     
     // Update pricing options
@@ -46,10 +72,26 @@ export const usePersistence = () => {
     } else {
       url.searchParams.delete('keyword');
     }
+
+    // Update sortBy
+    if (sortBy !== SortOption.ITEM_NAME) { // Only save if not default
+      url.searchParams.set('sortBy', sortBy);
+    } else {
+      url.searchParams.delete('sortBy');
+    }
+
+    // Update price range
+    if (priceRange[0] !== 0 || priceRange[1] !== 999) { // Only save if not default
+      url.searchParams.set('priceMin', priceRange[0].toString());
+      url.searchParams.set('priceMax', priceRange[1].toString());
+    } else {
+      url.searchParams.delete('priceMin');
+      url.searchParams.delete('priceMax');
+    }
     
     // Update URL without page reload
     window.history.replaceState({}, '', url.toString());
-  };
+  }, []);
 
   return { saveToURL };
 };

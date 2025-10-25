@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import { type StoreItem, type UIState, type PricingOption } from '../../types/index';
+import { type StoreItem, type UIState, type PricingOption, SortOption } from '../../types/index';
 import { storeApi } from '../../services/api';
 
 // Async thunk for fetching store items (like Pinia actions)
