@@ -46,134 +46,155 @@ const SearchAndFilters: React.FC = () => {
   };
 
   return (
-    <Box
-      sx={{
-        bgcolor: 'background.paper',
-        border: '1px solid',
-        borderColor: '#666666',
-        borderRadius: 2,
-        p: 3,
-      }}
-    >
-      <Typography variant="h6" color="text.primary" gutterBottom>
-        Find the Items you're looking for
-      </Typography>
+    <Box>
       {/* Search Bar */}
-      <Stack spacing={2} sx={{ mb: 3 }}>
-        <TextField
-          fullWidth
-          placeholder="Find the Items you're looking for"
-          value={keyword}
-          onChange={handleKeywordChange}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon sx={{ color: 'primary' }} />
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
-      </Stack>
+      <TextField
+        fullWidth
+        placeholder="Find the Items you're looking for"
+        value={keyword}
+        onChange={handleKeywordChange}
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: 'primary' }} />
+              </InputAdornment>
+            ),
+          },
+        }}
+        sx={{ mb: 3 }}
+      />
 
-      {/* Filter Section */}
-      <Box sx={{ mb: 3 }}>
-
-        <Stack spacing={2}>
-          <Box>
-              <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Typography variant="body2" color="text.primary">
-                    Pricing Option
-                  </Typography>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={pricingOptions.includes(PricingOption.PAID)}
-                        onChange={() => handlePricingToggle(PricingOption.PAID)}
-                      />
-                    }
-                    label="Paid"
-                    sx={{ color: 'text.primary' }}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={pricingOptions.includes(PricingOption.FREE)}
-                        onChange={() => handlePricingToggle(PricingOption.FREE)}
-                      />
-                    }
-                    label="Free"
-                    sx={{ color: 'text.primary' }}
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={pricingOptions.includes(PricingOption.VIEW_ONLY)}
-                        onChange={() => handlePricingToggle(PricingOption.VIEW_ONLY)}
-                      />
-                    }
-                    label="View Only"
-                    sx={{ color: 'text.primary' }}
-                  />
-                  {/* Inline Price Slider */}
-                  {pricingOptions.includes(PricingOption.PAID) && (
-                    <Box sx={{ minWidth: 200 }}>
-                      <Stack direction="row" alignItems="center" spacing={1}>
-                        <Typography variant="caption" color="text.secondary">
-                          $0
-                        </Typography>
-                        <Slider
-                          value={priceRange}
-                          onChange={handlePriceRangeChange}
-                          min={0}
-                          max={999}
-                          size="small"
-                          valueLabelDisplay="auto"
-                          valueLabelFormat={(value) => `$${value}`}
-                          disableSwap={false}
-                          sx={{
-                            color: '#87CEEB',
-                            height: 4,
-                            flex: 1,
-                          }}
-                        />
-                        <Typography variant="caption" color="text.secondary">
-                          $999
-                        </Typography>
-                      </Stack>
-                    </Box>
-                  )}
-                </Stack>
-                <Button
-                  onClick={handleReset}
-                  variant="text"
-                  size="small"
-                  sx={{ color: 'text.secondary' }}
-                >
-                  RESET
-                </Button>
-              </Stack>
-            </Box>
-
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="body2" color="text.primary">
-              Sort by:
+      {/* Filter Section with Dark Background */}
+      <Box
+        sx={{
+          bgcolor: 'background.paper',
+          border: '1px solid',
+          borderColor: '#666666',
+          borderRadius: 1,
+          p: 1.5,
+          mb: 2,
+        }}
+      >
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          {/* Left side: Pricing Options and Slider */}
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Typography variant="caption" color="text.primary" fontWeight="bold">
+              Pricing Option
             </Typography>
-            <Select
-              value={sortBy}
-              onChange={(e) => dispatch(setSortBy(e.target.value as SortOption))}
-              size="small"
-              sx={{ minWidth: 120 }}
-            >
-              <MenuItem value={SortOption.ITEM_NAME}>Item Name</MenuItem>
-              <MenuItem value={SortOption.HIGHER_PRICE}>Higher Price</MenuItem>
-              <MenuItem value={SortOption.LOWER_PRICE}>Lower Price</MenuItem>
-            </Select>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={pricingOptions.includes(PricingOption.PAID)}
+                  onChange={() => handlePricingToggle(PricingOption.PAID)}
+                  size="small"
+                />
+              }
+              label="Paid"
+              sx={{ color: 'text.primary', '& .MuiFormControlLabel-label': { fontSize: '0.75rem' } }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={pricingOptions.includes(PricingOption.FREE)}
+                  onChange={() => handlePricingToggle(PricingOption.FREE)}
+                  size="small"
+                />
+              }
+              label="Free"
+              sx={{ color: 'text.primary', '& .MuiFormControlLabel-label': { fontSize: '0.75rem' } }}
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={pricingOptions.includes(PricingOption.VIEW_ONLY)}
+                  onChange={() => handlePricingToggle(PricingOption.VIEW_ONLY)}
+                  size="small"
+                />
+              }
+              label="View Only"
+              sx={{ color: 'text.primary', '& .MuiFormControlLabel-label': { fontSize: '0.75rem' } }}
+            />
+            {/* Inline Price Slider */}
+            {pricingOptions.includes(PricingOption.PAID) && (
+              <Box sx={{ minWidth: 150 }}>
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                    $0
+                  </Typography>
+                  <Slider
+                    value={priceRange}
+                    onChange={handlePriceRangeChange}
+                    min={0}
+                    max={999}
+                    size="small"
+                    valueLabelDisplay="auto"
+                    valueLabelFormat={(value) => `$${value}`}
+                    disableSwap={false}
+                    sx={{
+                      color: '#87CEEB',
+                      height: 3,
+                      flex: 1,
+                    }}
+                  />
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                    $999
+                  </Typography>
+                </Stack>
+              </Box>
+            )}
           </Stack>
+
+          {/* Right side: Reset Button */}
+          <Button
+            onClick={handleReset}
+            variant="text"
+            size="small"
+            sx={{ 
+              color: 'text.secondary',
+              fontSize: '0.75rem',
+              minWidth: 'auto',
+              px: 1,
+            }}
+          >
+            RESET
+          </Button>
         </Stack>
       </Box>
+
+      {/* Sort By Section - Outside the dark container */}
+      <Stack direction="row" alignItems="center" spacing={2} sx={{ justifyContent: 'flex-end' }}>
+        <Typography variant="caption" color="text.primary" fontWeight="bold">
+          Sort by
+        </Typography>
+        <Select
+          value={sortBy}
+          onChange={(e) => dispatch(setSortBy(e.target.value as SortOption))}
+          variant="standard"
+          disableUnderline={false}
+          sx={{ 
+            minWidth: 100,
+            '& .MuiSelect-select': {
+              color: 'text.primary',
+              fontWeight: 'normal',
+              fontSize: '0.75rem',
+            },
+            '& .MuiInput-underline:before': {
+              borderBottomColor: '#666666',
+            },
+            '& .MuiInput-underline:after': {
+              borderBottomColor: '#cccccc',
+            },
+            '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+              borderBottomColor: '#888888',
+            },
+          }}
+        >
+          <MenuItem value={SortOption.ITEM_NAME} sx={{ fontSize: '0.75rem' }}>Item Name</MenuItem>
+          <MenuItem value={SortOption.HIGHER_PRICE} sx={{ fontSize: '0.75rem' }}>Higher Price</MenuItem>
+          <MenuItem value={SortOption.LOWER_PRICE} sx={{ fontSize: '0.75rem' }}>Lower Price</MenuItem>
+        </Select>
+      </Stack>
     </Box>
   );
 };

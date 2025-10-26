@@ -27,6 +27,11 @@ const filterSlice = createSlice({
       if (index > -1) {
         // Remove if already selected
         state.pricingOptions.splice(index, 1);
+        
+        // If removing PAID option, reset price range to default
+        if (option === PricingOption.PAID) {
+          state.priceRange = [0, 999];
+        }
       } else {
         // Add if not selected
         state.pricingOptions.push(option);

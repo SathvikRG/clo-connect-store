@@ -39,112 +39,92 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
     return (
       <Box
         sx={{
-          bgcolor: 'background.paper',
-          border: '1px solid',
-          borderColor: 'primary.main',
-          borderRadius: 2,
-          p: 3,
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(5, 1fr)',
+            xl: 'repeat(5, 1fr)',
+          },
+          gap: 3,
+          justifyItems: 'center',
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3 }}>
-          <Box
-            sx={{
-              width: 12,
-              height: 12,
-              bgcolor: 'primary.main',
-              borderRadius: '50%',
-            }}
-          />
-          <Typography variant="h6" color="text.primary">
-            Contents List
-          </Typography>
-        </Stack>
-        <Grid container spacing={3}>
-          {Array.from({ length: 8 }).map((_, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-              <Card sx={{ bgcolor: 'background.default' }}>
-                <Skeleton variant="rectangular" height={200} />
-                <CardContent>
-                  <Skeleton variant="text" height={24} sx={{ mb: 1 }} />
-                  <Skeleton variant="text" height={20} sx={{ mb: 2 }} />
-                  <Skeleton variant="rectangular" height={32} width={80} />
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        {Array.from({ length: 8 }).map((_, index) => (
+          <Card key={index} sx={{ bgcolor: 'background.default', width: '100%', maxWidth: 300 }}>
+            <Skeleton variant="rectangular" height={200} />
+            <CardContent>
+              <Skeleton variant="text" height={24} sx={{ mb: 1 }} />
+              <Skeleton variant="text" height={20} sx={{ mb: 2 }} />
+              <Skeleton variant="rectangular" height={32} width={80} />
+            </CardContent>
+          </Card>
+        ))}
       </Box>
     );
   }
 
   return (
-    <Box
-      sx={{
-        bgcolor: 'background.paper',
-        border: '1px solid',
-        borderColor: 'primary.main',
-        borderRadius: 2,
-        p: 3,
-      }}
-    >
-      <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3 }}>
-        <Box
-          sx={{
-            width: 12,
-            height: 12,
-            bgcolor: 'primary.main',
-            borderRadius: '50%',
-          }}
-        />
-        <Typography variant="h6" color="text.primary">
-          Contents List
-        </Typography>
-      </Stack>
-      
-      <Grid container spacing={3}>
+    <>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(5, 1fr)',
+            xl: 'repeat(5, 1fr)',
+          },
+          gap: 3,
+          justifyItems: 'center',
+        }}
+      >
         {items.map((item, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={`${item.id}-${index}`}>
-            <Card 
-              sx={{ 
-                bgcolor: 'background.default',
-                '&:hover': {
-                  boxShadow: 4,
-                },
-                transition: 'box-shadow 0.3s',
+          <Card 
+            key={`${item.id}-${index}`}
+            sx={{ 
+              bgcolor: 'background.default',
+              width: '100%',
+              maxWidth: 300,
+              '&:hover': {
+                boxShadow: 4,
+              },
+              transition: 'box-shadow 0.3s',
+            }}
+          >
+            <CardMedia
+              component="img"
+              height="200"
+              image={item.imagePath}
+              alt={item.title}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlPC90ZXh0Pjwvc3ZnPg==';
               }}
-            >
-              <CardMedia
-                component="img"
-                height="200"
-                image={item.imagePath}
-                alt={item.title}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlPC90ZXh0Pjwvc3ZnPg==';
-                }}
-              />
-              <CardContent>
-                <Typography variant="h6" color="text.primary" noWrap gutterBottom>
-                  {item.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" noWrap sx={{ mb: 2 }}>
-                  {item.creator}
-                </Typography>
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <Chip
-                    label={getPricingDisplay(item)}
-                    size="small"
-                    sx={{
-                      bgcolor: 'grey.600',
-                      color: 'white',
-                    }}
-                  />
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+            />
+            <CardContent>
+              <Typography variant="h6" color="text.primary" noWrap gutterBottom>
+                {item.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" noWrap sx={{ mb: 2 }}>
+                {item.creator}
+              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Chip
+                  label={getPricingDisplay(item)}
+                  size="small"
+                  sx={{
+                    bgcolor: 'grey.600',
+                    color: 'white',
+                  }}
+                />
+              </Box>
+            </CardContent>
+          </Card>
         ))}
-      </Grid>
+      </Box>
       
       {/* Infinite Scroll Trigger */}
       {hasMore && (
@@ -172,7 +152,7 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
           </Typography>
         </Box>
       )}
-    </Box>
+    </>
   );
 };
 
