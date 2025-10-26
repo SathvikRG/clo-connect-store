@@ -4,11 +4,11 @@ import storeReducer, {
   resetStore,
   filterItems,
   clearError,
-} from '../storeSlice'
-import { PricingOption, SortOption } from '../../../types/index'
+} from '../../store/slices/storeSlice'
+import { PricingOption, SortOption } from '../../types/index'
 
 // Mock the API
-vi.mock('../../../services/api', () => ({
+vi.mock('../../services/api', () => ({
   storeApi: {
     fetchStoreItemsPaginated: vi.fn(),
   },

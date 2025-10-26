@@ -3,9 +3,9 @@ import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { vi } from 'vitest'
 import React from 'react'
-import { useInfiniteScroll } from '../useInfiniteScroll'
-import storeReducer from '../../store/slices/storeSlice'
-import filterReducer from '../../store/slices/filterSlice'
+import { useInfiniteScroll } from '../../hooks/useInfiniteScroll'
+import storeReducer from '../store/slices/storeSlice'
+import filterReducer from '../store/slices/filterSlice'
 
 // Mock react-intersection-observer
 vi.mock('react-intersection-observer', () => ({

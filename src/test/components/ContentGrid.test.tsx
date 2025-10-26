@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { vi } from 'vitest'
-import ContentGrid from '../ContentGrid'
-import storeReducer from '../../../../store/slices/storeSlice'
-import filterReducer from '../../../../store/slices/filterSlice'
-import { type StoreItem, PricingOption } from '../../../../types/index'
+import ContentGrid from '../../components/ContentGrid'
+import storeReducer from '../store/slices/storeSlice'
+import filterReducer from '../store/slices/filterSlice'
+import { type StoreItem, PricingOption } from '../types/index'
 
 // Mock the useInfiniteScroll hook
-vi.mock('../../../../hooks/useInfiniteScroll', () => ({
+vi.mock('../../hooks/useInfiniteScroll', () => ({
   useInfiniteScroll: vi.fn(() => ({
     ref: null,
     isLoading: false,

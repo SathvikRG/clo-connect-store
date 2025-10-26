@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { storeApi } from '../api'
+import { storeApi } from '../../services/api'
 
 // Skip API tests for now - they test external dependencies
 describe.skip('storeApi', () => {

@@ -15,9 +15,9 @@ import {
 } from '@mui/material'
 import { Search as SearchIcon } from '@mui/icons-material'
 
-import { type AppDispatch, type RootState } from '../../../store'
-import { togglePricingOption, resetFilters, setKeyword, setSortBy, setPriceRange } from '../../../store/slices/filterSlice'
-import { PricingOption, SortOption } from '../../../types/index'
+import { type AppDispatch, type RootState } from '../store'
+import { togglePricingOption, resetFilters, setKeyword, setSortBy, setPriceRange } from '../store/slices/filterSlice'
+import { PricingOption, SortOption } from '../types/index'
 
 const SearchAndFilters: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -65,9 +65,9 @@ const SearchAndFilters: React.FC = () => {
       {/* Filter Section with Dark Background */}
       <Box
         sx={{
-          bgcolor: 'background.paper',
+          bgcolor: '#1a1a1a',
           border: '1px solid',
-          borderColor: '#666666',
+          borderColor: '#1a1a1a',
           borderRadius: 1,
           p: 1.5,
           mb: 2,

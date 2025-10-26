@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
-import SearchAndFilters from '../SearchAndFilters'
-import storeReducer from '../../../../store/slices/storeSlice'
-import filterReducer from '../../../../store/slices/filterSlice'
-import { PricingOption, SortOption } from '../../../../types/index'
+import SearchAndFilters from '../../components/SearchAndFilters'
+import storeReducer from '../store/slices/storeSlice'
+import filterReducer from '../store/slices/filterSlice'
+import { PricingOption, SortOption } from '../types/index'
 
 // Mock store for testing
 const createMockStore = (initialState = {}) => {

@@ -5,8 +5,8 @@ import filterReducer, {
   setSortBy,
   setPriceRange,
   resetFilters,
-} from '../filterSlice'
-import { PricingOption, SortOption } from '../../../types/index'
+} from '../../store/slices/filterSlice'
+import { PricingOption, SortOption } from '../../types/index'
 
 describe('filterSlice', () => {
   const initialState = {

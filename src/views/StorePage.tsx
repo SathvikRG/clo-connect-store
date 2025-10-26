@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, Box } from '@mui/material'
-import { type AppDispatch, type RootState } from '../../store'
-import { fetchStoreItems, filterItems } from '../../store/slices/storeSlice'
-import { usePersistence } from '../../hooks/usePersistence'
-import Header from './components/Header'
-import SearchAndFilters from './components/SearchAndFilters'
-import ContentGrid from './components/ContentGrid'
+import { type AppDispatch, type RootState } from '../store'
+import { fetchStoreItems, filterItems } from '../store/slices/storeSlice'
+import { usePersistence } from '../hooks/usePersistence'
+import Header from '../components/Header'
+import SearchAndFilters from '../components/SearchAndFilters'
+import ContentGrid from '../components/ContentGrid'
 
 const StorePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

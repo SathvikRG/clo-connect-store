@@ -5,14 +5,13 @@ import {
   Card,
   CardMedia,
   CardContent,
-  Chip,
   CircularProgress,
   Skeleton,
   Stack,
 } from '@mui/material'
 
-import { type StoreItem, PricingOption } from '../../../types/index'
-import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll'
+import { type StoreItem, PricingOption } from '../types/index'
+import { useInfiniteScroll } from '../hooks/useInfiniteScroll'
 
 interface ContentGridProps {
   items: StoreItem[];
@@ -25,11 +24,10 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
   const gridStyles = {
     display: 'grid',
     gridTemplateColumns: {
-      xs: '1fr',
-      sm: 'repeat(2, 1fr)',
-      md: 'repeat(3, 1fr)',
-      lg: 'repeat(5, 1fr)',
-      xl: 'repeat(5, 1fr)',
+      xs: '1fr',           // Below 480px: 1 column
+      sm: 'repeat(2, 1fr)', // Below 768px: 2 columns
+      md: 'repeat(3, 1fr)', // Below 1200px: 3 columns
+      lg: 'repeat(4, 1fr)', // Default: 4 columns
     },
     gap: 3,
     justifyItems: 'center',
@@ -52,12 +50,14 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
     return (
       <Box sx={gridStyles}>
         {Array.from({ length: 8 }).map((_, index) => (
-          <Card key={index} sx={{ bgcolor: 'background.default', width: '100%', maxWidth: 300 }}>
-            <Skeleton variant="rectangular" height={200} />
-            <CardContent>
-              <Skeleton variant="text" height={24} sx={{ mb: 1 }} />
-              <Skeleton variant="text" height={20} sx={{ mb: 2 }} />
-              <Skeleton variant="rectangular" height={32} width={80} />
+          <Card key={index} sx={{ bgcolor: 'transparent', width: '100%', maxWidth: 300, aspectRatio: '3/4', boxShadow: 'none' }}>
+            <Skeleton variant="rectangular" sx={{ height: '75%' }} />
+            <CardContent sx={{ height: '25%', p: 2, bgcolor: 'transparent' }}>
+              <Skeleton variant="text" height={20} sx={{ mb: 1 }} />
+              <Skeleton variant="text" height={16} sx={{ mb: 2 }} />
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Skeleton variant="rectangular" height={24} width={60} />
+              </Box>
             </CardContent>
           </Card>
         ))}
@@ -72,18 +72,20 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
           <Card 
             key={`${item.id}-${index}`}
             sx={{ 
-              bgcolor: 'background.default',
+              bgcolor: 'transparent',
               width: '100%',
-              maxWidth: 300,
+              maxWidth: 400,
+              aspectRatio: '3/4',
+              boxShadow: 'none',
               '&:hover': {
-                boxShadow: 4,
+                boxShadow: 2,
               },
               transition: 'box-shadow 0.3s',
             }}
           >
             <CardMedia
               component="img"
-              height="200"
+              sx={{ height: '75%', objectFit: 'cover', bgcolor: 'transparent' }}
               image={item.imagePath}
               alt={item.title}
               onError={(e) => {
@@ -91,23 +93,26 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
                 target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlPC90ZXh0Pjwvc3ZnPg==';
               }}
             />
-            <CardContent>
-              <Typography variant="h6" color="text.primary" noWrap gutterBottom>
-                {item.title}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" noWrap sx={{ mb: 2 }}>
+            <CardContent sx={{ height: '25%', bgcolor: '#1a1a1a', display: 'flex', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                <Typography variant="h6" color="text.primary" noWrap sx={{ fontSize: '0.9rem', fontWeight: 'normal', flex: 1 }}>
+                  {item.title}
+                </Typography>
+                <Typography 
+                  variant="h6" 
+                  color="text.primary" 
+                  sx={{ 
+                    fontSize: '1.1rem', 
+                    fontWeight: 'bold',
+                    ml: 1,
+                  }}
+                >
+                  {getPricingDisplay(item)}
+                </Typography>
+              </Box>
+              <Typography variant="body2" color="text.secondary" noWrap sx={{ fontSize: '0.8rem' }}>
                 {item.creator}
               </Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Chip
-                  label={getPricingDisplay(item)}
-                  size="small"
-                  sx={{
-                    bgcolor: 'grey.600',
-                    color: 'white',
-                  }}
-                />
-              </Box>
             </CardContent>
           </Card>
         ))}
