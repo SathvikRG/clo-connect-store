@@ -254,7 +254,7 @@ describe('storeSlice', () => {
       const action = filterItems({
         pricingOptions: [],
         keyword: '',
-        sortBy: 'unknown' as any,
+        sortBy: 'unknown' as SortOption,
         priceRange: [0, 999],
       })
       

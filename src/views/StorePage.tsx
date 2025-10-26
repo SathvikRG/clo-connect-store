@@ -10,7 +10,7 @@ import ContentGrid from '../components/ContentGrid'
 
 const StorePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { filteredItems, ui, items } = useSelector((state: RootState) => state.store);
+  const { filteredItems, ui } = useSelector((state: RootState) => state.store);
   const { pricingOptions, keyword, sortBy, priceRange } = useSelector((state: RootState) => state.filters);
   const { saveToURL } = usePersistence();
 
