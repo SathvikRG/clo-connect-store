@@ -4,9 +4,9 @@ import { configureStore } from '@reduxjs/toolkit'
 import { vi } from 'vitest'
 import React from 'react'
 import { usePersistence } from '../../hooks/usePersistence'
-import storeReducer from '../store/slices/storeSlice'
-import filterReducer from '../store/slices/filterSlice'
-import { PricingOption, SortOption } from '../types/index'
+import storeReducer from '../../store/slices/storeSlice'
+import filterReducer from '../../store/slices/filterSlice'
+import { PricingOption, SortOption } from '../../types/index'
 
 // Mock window.history
 const mockReplaceState = vi.fn()

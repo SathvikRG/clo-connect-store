@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

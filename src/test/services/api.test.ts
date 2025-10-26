@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { storeApi } from '../../services/api'
 
-// Skip API tests for now - they test external dependencies
-describe.skip('storeApi', () => {
+// Test API functions
+describe('storeApi', () => {
   describe('fetchStoreItemsPaginated', () => {
     it('should have the correct function signature', () => {
       expect(typeof storeApi.fetchStoreItemsPaginated).toBe('function')
