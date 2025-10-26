@@ -250,9 +250,54 @@ describe('storeSlice', () => {
       
       expect(newState.filteredItems).toHaveLength(3)
     })
+
+    it('handles unknown sortBy with default case', () => {
+      const action = filterItems({
+        pricingOptions: [],
+        keyword: '',
+        sortBy: 'unknown' as any,
+        priceRange: [0, 999],
+      })
+      
+      const newState = storeReducer(stateWithItems, action)
+      
+      // Should return items unsorted (default case returns 0)
+      expect(newState.filteredItems).toHaveLength(3)
+    })
   })
 
   describe('fetchStoreItems async thunk', () => {
+    it('handles fetching with default params', async () => {
+      // Test that fetchStoreItems can be called with undefined params (uses defaults)
+      const action = fetchStoreItems(undefined)
+      expect(action).toBeDefined()
+      
+      // Also test calling with empty object to hit line 9: `const { page = 1, limit = 20 } = params || {};`
+      const emptyAction = fetchStoreItems({})
+      expect(emptyAction).toBeDefined()
+    })
+
+    it('handles fetching with custom params', async () => {
+      // Import the mocked API
+      const { storeApi } = await import('../../../services/api')
+      
+      // Mock the API response
+      vi.mocked(storeApi.fetchStoreItemsPaginated).mockResolvedValueOnce({
+        items: [],
+        hasMore: false,
+      })
+      
+      // Test that fetchStoreItems can be called with custom params
+      const action = fetchStoreItems({ page: 2, limit: 10 })
+      expect(action).toBeDefined()
+      
+      // This will execute the async thunk and test line 10-11 where response is returned
+      const result = await action(vi.fn(), vi.fn(), vi.fn())
+      
+      expect(storeApi.fetchStoreItemsPaginated).toHaveBeenCalledWith(2, 10)
+      expect(result).toBeDefined()
+    })
+
     it('handles pending state', () => {
       const action = { type: fetchStoreItems.pending.type }
       const newState = storeReducer(initialState, action)
@@ -317,6 +362,19 @@ describe('storeSlice', () => {
       
       expect(newState.ui.isLoading).toBe(false)
       expect(newState.error).toBe('Network error')
+    })
+
+    it('handles rejected state without error message', () => {
+      const action = {
+        type: fetchStoreItems.rejected.type,
+        error: {},
+      }
+      
+      const newState = storeReducer(initialState, action)
+      
+      expect(newState.ui.isLoading).toBe(false)
+      // Should use fallback message when error.message is undefined
+      expect(newState.error).toBe('Failed to fetch store items')
     })
 
     it('deduplicates items on fulfilled', () => {

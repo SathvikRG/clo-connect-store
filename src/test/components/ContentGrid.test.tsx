@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { vi } from 'vitest'
@@ -106,6 +106,20 @@ describe('ContentGrid', () => {
     expect(screen.getByText('View Only')).toBeInTheDocument()
   })
 
+  it('handles unknown pricing option with default case', () => {
+    const itemWithUnknownPricing = [
+      {
+        ...mockItems[0],
+        pricingOption: 'UNKNOWN' as PricingOption,
+      },
+    ]
+    
+    renderWithProvider(<ContentGrid items={itemWithUnknownPricing} isLoading={false} />, defaultState)
+    
+    // Should default to "View Only"
+    expect(screen.getByText('View Only')).toBeInTheDocument()
+  })
+
   it('displays creator names', () => {
     renderWithProvider(<ContentGrid items={mockItems} isLoading={false} />, defaultState)
     
@@ -126,6 +140,13 @@ describe('ContentGrid', () => {
     
     const images = screen.getAllByRole('img')
     expect(images[0]).toHaveAttribute('src', 'invalid-url')
+    
+    // Trigger error event to test onError handler
+    fireEvent.error(images[0])
+    
+    // After error, the image src should be replaced with the placeholder SVG
+    const imgElement = images[0] as HTMLImageElement
+    expect(imgElement.src).toContain('data:image/svg+xml')
   })
 
   it('renders empty state when no items', () => {
@@ -155,6 +176,27 @@ describe('ContentGrid', () => {
     renderWithProvider(<ContentGrid items={mockItems} isLoading={false} />, stateWithHasMore)
     
     expect(screen.getByText('Scroll down to load more')).toBeInTheDocument()
+  })
+
+  it('shows loading spinner when infiniteLoading is true', () => {
+    // Mock the hook to return isLoading: true (this maps to infiniteLoading)
+    vi.mocked(useInfiniteScroll).mockReturnValueOnce({
+      ref: null,
+      isLoading: true,
+      hasMore: true,
+    })
+    
+    const stateWithHasMore = {
+      ...defaultState,
+      store: {
+        ...defaultState.store,
+        ui: { ...defaultState.store.ui, hasMore: true },
+      },
+    }
+    
+    renderWithProvider(<ContentGrid items={mockItems} isLoading={false} />, stateWithHasMore)
+    
+    expect(screen.getByText('Loading more items...')).toBeInTheDocument()
   })
 
   it('shows end of results when hasMore is false', () => {

@@ -68,12 +68,16 @@ describe('SearchAndFilters', () => {
     
     const paidCheckbox = screen.getByLabelText('Paid')
     const freeCheckbox = screen.getByLabelText('Free')
+    const viewOnlyCheckbox = screen.getByLabelText('View Only')
     
     fireEvent.click(paidCheckbox)
     expect(paidCheckbox).toBeChecked()
     
     fireEvent.click(freeCheckbox)
     expect(freeCheckbox).toBeChecked()
+    
+    fireEvent.click(viewOnlyCheckbox)
+    expect(viewOnlyCheckbox).toBeChecked()
     
     fireEvent.click(paidCheckbox)
     expect(paidCheckbox).not.toBeChecked()
