@@ -5,7 +5,7 @@ import { vi } from 'vitest'
 import ContentGrid from '../ContentGrid'
 import storeReducer from '../../../../store/slices/storeSlice'
 import filterReducer from '../../../../store/slices/filterSlice'
-import { StoreItem, PricingOption } from '../../../../types/index'
+import { type StoreItem, PricingOption } from '../../../../types/index'
 
 // Mock the useInfiniteScroll hook
 vi.mock('../../../../hooks/useInfiniteScroll', () => ({

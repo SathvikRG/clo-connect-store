@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import { type StoreItem, type UIState, type PricingOption } from '../../types/index';
+import { type StoreItem, type UIState, PricingOption } from '../../types/index';
 import { storeApi } from '../../services/api';
 
-// Async thunk for fetching store items (like Pinia actions)
+// Async thunk for fetching store items
 export const fetchStoreItems = createAsyncThunk(
   'store/fetchStoreItems',
   async (params?: { page?: number; limit?: number }) => {
@@ -37,16 +37,16 @@ const storeSlice = createSlice({
   initialState,
   reducers: {
     // Reset store state
-    resetStore: (state) => {
-      state.items = [];
-      state.filteredItems = [];
-      state.ui = {
-        isLoading: false,
-        hasMore: true,
-        currentPage: 1,
-      };
-      state.error = null;
-    },
+        resetStore: (state) => {
+          state.items = [];
+          state.filteredItems = [];
+          state.ui = {
+            isLoading: false,
+            hasMore: true,
+            currentPage: 1,
+          };
+          state.error = null;
+        },
     
     // Filter items based on pricing options, keyword, sort, and price range
     filterItems: (state, action: PayloadAction<{ pricingOptions: PricingOption[]; keyword: string; sortBy: string; priceRange: [number, number] }>) => {
@@ -60,7 +60,7 @@ const storeSlice = createSlice({
           if (!pricingOptions.includes(item.pricingOption)) return false;
           
           // If PAID option is selected, also filter by price range
-          if (item.pricingOption === 0) { // PricingOption.PAID
+          if (item.pricingOption === PricingOption.PAID) {
             return item.price >= priceRange[0] && item.price <= priceRange[1];
           }
           

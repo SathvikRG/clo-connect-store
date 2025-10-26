@@ -10,7 +10,8 @@ import {
   Skeleton,
   Stack,
 } from '@mui/material';
-import { type StoreItem } from '../../../types/index';
+
+import { type StoreItem, PricingOption } from '../../../types/index';
 import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 
 interface ContentGridProps {
@@ -21,13 +22,26 @@ interface ContentGridProps {
 const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
   const { ref, isLoading: infiniteLoading, hasMore } = useInfiniteScroll();
   
+  const gridStyles = {
+    display: 'grid',
+    gridTemplateColumns: {
+      xs: '1fr',
+      sm: 'repeat(2, 1fr)',
+      md: 'repeat(3, 1fr)',
+      lg: 'repeat(5, 1fr)',
+      xl: 'repeat(5, 1fr)',
+    },
+    gap: 3,
+    justifyItems: 'center',
+  };
+  
   const getPricingDisplay = (item: StoreItem) => {
     switch (item.pricingOption) {
-      case 0: // PAID
+      case PricingOption.PAID:
         return `$${item.price.toFixed(2)}`;
-      case 1: // FREE
+      case PricingOption.FREE:
         return 'FREE';
-      case 2: // VIEW_ONLY
+      case PricingOption.VIEW_ONLY:
         return 'View Only';
       default:
         return 'View Only';
@@ -36,20 +50,7 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
 
   if (isLoading) {
     return (
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(5, 1fr)',
-            xl: 'repeat(5, 1fr)',
-          },
-          gap: 3,
-          justifyItems: 'center',
-        }}
-      >
+      <Box sx={gridStyles}>
         {Array.from({ length: 8 }).map((_, index) => (
           <Card key={index} sx={{ bgcolor: 'background.default', width: '100%', maxWidth: 300 }}>
             <Skeleton variant="rectangular" height={200} />
@@ -66,20 +67,7 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
 
   return (
     <>
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: {
-            xs: '1fr',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(5, 1fr)',
-            xl: 'repeat(5, 1fr)',
-          },
-          gap: 3,
-          justifyItems: 'center',
-        }}
-      >
+      <Box sx={gridStyles}>
         {items.map((item, index) => (
           <Card 
             key={`${item.id}-${index}`}

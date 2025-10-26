@@ -10,12 +10,9 @@ const api = axios.create({
   },
 });
 
-// Request interceptor for logging (useful for debugging)
+// Request interceptor for logging
 api.interceptors.request.use(
-  (config) => {
-    console.log(`API Request: ${config.method?.toUpperCase()} ${config.url}`);
-    return config;
-  },
+  (config) => config,
   (error) => {
     console.error('Request Error:', error);
     return Promise.reject(error);
@@ -24,9 +21,7 @@ api.interceptors.request.use(
 
 // Response interceptor for error handling
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
     console.error('API Error:', error.response?.data || error.message);
     return Promise.reject(error);
@@ -35,17 +30,6 @@ api.interceptors.response.use(
 
 // API service functions
 export const storeApi = {
-  // Fetch all store items
-  fetchStoreItems: async (): Promise<StoreItem[]> => {
-    try {
-      const response = await api.get('/api/data');
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch store items:', error);
-      throw error;
-    }
-  },
-
   // Fetch store items with pagination (for infinite scroll)
   fetchStoreItemsPaginated: async (
     page: number = 1,
@@ -54,13 +38,12 @@ export const storeApi = {
     try {
       const response = await api.get('/api/data');
       const allItems = response.data;
-      
       // Simulate pagination on frontend since API doesn't support it
       const startIndex = (page - 1) * limit;
       const endIndex = startIndex + limit;
       const items = allItems.slice(startIndex, endIndex);
       const hasMore = endIndex < allItems.length;
-      
+
       return { items, hasMore };
     } catch (error) {
       console.error('Failed to fetch paginated store items:', error);

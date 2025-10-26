@@ -14,6 +14,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
+
 import { type AppDispatch, type RootState } from '../../../store';
 import { togglePricingOption, resetFilters, setKeyword, setSortBy, setPriceRange } from '../../../store/slices/filterSlice';
 import { PricingOption, SortOption } from '../../../types/index';
@@ -34,8 +35,7 @@ const SearchAndFilters: React.FC = () => {
     dispatch(setKeyword(e.target.value));
   };
 
-
-  const handlePriceRangeChange = (event: Event, newValue: number | number[]) => {
+  const handlePriceRangeChange = (_: Event, newValue: number | number[]) => {
     const value = newValue as number[];
     const [min, max] = value;
     const newRange: [number, number] = [Math.min(min, max), Math.max(min, max)];
