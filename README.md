@@ -281,7 +281,31 @@ npm test                    # Run tests once with coverage
 
 ## 🚀 Deployment
 
-### Building for Production
+### GitHub Pages Deployment (Automated)
+
+This project is set up for automatic deployment to GitHub Pages:
+
+1. **Push to GitHub**
+   ```bash
+   git add .
+   git commit -m "Setup GitHub Pages deployment"
+   git push origin main
+   ```
+
+2. **Enable GitHub Pages**
+   - Go to your repository on GitHub
+   - Click **Settings** → **Pages**
+   - Under **Source**, select **GitHub Actions**
+   - Save the changes
+
+3. **Your site will be available at:**
+   ```
+   https://yourusername.github.io/clo-connect-store/
+   ```
+
+The deployment happens automatically on every push to the `main` branch via GitHub Actions.
+
+### Manual Build for Production
 
 ```bash
 npm run build
@@ -296,10 +320,9 @@ This will create an optimized production build in the `dist/` directory.
 - Source maps for debugging
 - Optimized asset paths
 
-### Deployment Options
-- **Vercel**: Zero-config deployment
+### Other Deployment Options
+- **Vercel**: Zero-config deployment with `vercel` CLI
 - **Netlify**: Drag-and-drop or Git integration
-- **GitHub Pages**: Free hosting for static sites
 - **Azure Static Web Apps**: Microsoft cloud hosting
 - **AWS S3 + CloudFront**: Scalable cloud hosting
 

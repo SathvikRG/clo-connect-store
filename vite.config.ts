@@ -6,4 +6,8 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  base: '/clo-connect-store/',
+  build: {
+    outDir: 'dist',
+  },
 })
