@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import axios from 'axios'
 import { storeApi } from '../api'
-import { StoreItem, PricingOption } from '../../types/index'
+import { PricingOption } from '../../types/index'
 
 // Skip API tests for now - they test external dependencies
 describe.skip('storeApi', () => {
@@ -52,7 +52,7 @@ describe.skip('storeApi', () => {
         request: { use: vi.fn() },
         response: { use: vi.fn() },
       },
-    } as any)
+    } as unknown as ReturnType<typeof axios.create>)
 
     const result = await storeApi.fetchStoreItems()
     
@@ -69,7 +69,7 @@ describe.skip('storeApi', () => {
           request: { use: vi.fn() },
           response: { use: vi.fn() },
         },
-      } as any)
+      } as unknown as ReturnType<typeof axios.create>)
 
       await expect(storeApi.fetchStoreItems()).rejects.toThrow(errorMessage)
     })
@@ -82,7 +82,7 @@ describe.skip('storeApi', () => {
           request: { use: vi.fn() },
           response: { use: vi.fn() },
         },
-      } as any)
+      } as unknown as ReturnType<typeof axios.create>)
 
       await storeApi.fetchStoreItems()
       
@@ -105,7 +105,7 @@ describe.skip('storeApi', () => {
           request: { use: vi.fn() },
           response: { use: vi.fn() },
         },
-      } as any)
+      } as unknown as ReturnType<typeof axios.create>)
 
       const result = await storeApi.fetchStoreItemsPaginated(1, 20)
       
@@ -129,7 +129,7 @@ describe.skip('storeApi', () => {
           request: { use: vi.fn() },
           response: { use: vi.fn() },
         },
-      } as any)
+      } as unknown as ReturnType<typeof axios.create>)
 
       const result = await storeApi.fetchStoreItemsPaginated(2, 20)
       
@@ -153,7 +153,7 @@ describe.skip('storeApi', () => {
           request: { use: vi.fn() },
           response: { use: vi.fn() },
         },
-      } as any)
+      } as unknown as ReturnType<typeof axios.create>)
 
       const result = await storeApi.fetchStoreItemsPaginated(3, 20)
       
@@ -175,7 +175,7 @@ describe.skip('storeApi', () => {
           request: { use: vi.fn() },
           response: { use: vi.fn() },
         },
-      } as any)
+      } as unknown as ReturnType<typeof axios.create>)
 
       const result = await storeApi.fetchStoreItemsPaginated()
       
@@ -192,7 +192,7 @@ describe.skip('storeApi', () => {
           request: { use: vi.fn() },
           response: { use: vi.fn() },
         },
-      } as any)
+      } as unknown as ReturnType<typeof axios.create>)
 
       await expect(storeApi.fetchStoreItemsPaginated(1, 20)).rejects.toThrow(errorMessage)
     })

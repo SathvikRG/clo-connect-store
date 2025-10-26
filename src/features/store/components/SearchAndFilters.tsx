@@ -34,9 +34,6 @@ const SearchAndFilters: React.FC = () => {
     dispatch(setKeyword(e.target.value));
   };
 
-  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setSortBy(e.target.value as SortOption));
-  };
 
   const handlePriceRangeChange = (event: Event, newValue: number | number[]) => {
     const value = newValue as number[];

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { type StoreItem, type FetchStoreItemsParams } from '../types/index';
+import { type StoreItem } from '../types/index';
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -36,7 +36,7 @@ api.interceptors.response.use(
 // API service functions
 export const storeApi = {
   // Fetch all store items
-  fetchStoreItems: async (params?: FetchStoreItemsParams): Promise<StoreItem[]> => {
+  fetchStoreItems: async (): Promise<StoreItem[]> => {
     try {
       const response = await api.get('/api/data');
       return response.data;

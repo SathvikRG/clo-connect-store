@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react'
+import { renderHook } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
 import { vi } from 'vitest'
@@ -6,7 +6,6 @@ import React from 'react'
 import { useInfiniteScroll } from '../useInfiniteScroll'
 import storeReducer from '../../store/slices/storeSlice'
 import filterReducer from '../../store/slices/filterSlice'
-import { fetchStoreItems } from '../../store/slices/storeSlice'
 
 // Mock react-intersection-observer
 vi.mock('react-intersection-observer', () => ({
@@ -35,7 +34,7 @@ const createMockStore = (initialState = {}) => {
   })
 }
 
-const renderHookWithProvider = (hook: () => any, initialState = {}) => {
+const renderHookWithProvider = (hook: () => unknown, initialState = {}) => {
   const store = createMockStore(initialState)
   const wrapper = ({ children }: { children: React.ReactNode }) => {
     return React.createElement(Provider, { store }, children)

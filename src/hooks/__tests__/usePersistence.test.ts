@@ -37,7 +37,7 @@ const createMockStore = (initialState = {}) => {
   })
 }
 
-const renderHookWithProvider = (hook: () => any, initialState = {}) => {
+const renderHookWithProvider = (hook: () => unknown, initialState = {}) => {
   const store = createMockStore(initialState)
   const wrapper = ({ children }: { children: React.ReactNode }) => {
     return React.createElement(Provider, { store }, children)
