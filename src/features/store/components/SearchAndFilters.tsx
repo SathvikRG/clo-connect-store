@@ -1,5 +1,19 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  Box,
+  Typography,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Select,
+  MenuItem,
+  Button,
+  Stack,
+  Slider,
+  InputAdornment,
+} from '@mui/material';
+import { Search as SearchIcon } from '@mui/icons-material';
 import { type AppDispatch, type RootState } from '../../../store';
 import { togglePricingOption, resetFilters, setKeyword, setSortBy, setPriceRange } from '../../../store/slices/filterSlice';
 import { PricingOption, SortOption } from '../../../types/index';
@@ -24,120 +38,161 @@ const SearchAndFilters: React.FC = () => {
     dispatch(setSortBy(e.target.value as SortOption));
   };
 
-  const handlePriceRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value);
-    const newRange: [number, number] = [Math.min(priceRange[0], value), Math.max(priceRange[1], value)];
+  const handlePriceRangeChange = (event: Event, newValue: number | number[]) => {
+    const value = newValue as number;
+    const newRange: [number, number] = [priceRange[0], value];
     dispatch(setPriceRange(newRange));
   };
 
   return (
-    <div className="bg-dark-panel border border-accent-green rounded-lg p-6">
-      <h2 className="text-lg font-semibold text-white mb-4">
+    <Box
+      sx={{
+        bgcolor: 'background.paper',
+        border: '1px solid',
+        borderColor: 'primary.main',
+        borderRadius: 2,
+        p: 3,
+      }}
+    >
+      <Typography variant="h6" color="text.primary" gutterBottom>
         Find the Items you're looking for
-      </h2>
+      </Typography>
       
       {/* Search Bar */}
-      <div className="mb-6">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Find the Items you're looking for"
-            value={keyword}
-            onChange={handleKeywordChange}
-            className="w-full bg-dark-bg border border-gray-600 rounded-lg px-4 py-3 pr-12 text-white placeholder-gray-400 focus:outline-none focus:border-accent-green"
-          />
-          <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-            <svg className="w-5 h-5 text-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-        </div>
-        <div className="flex justify-end mt-2">
-          <span className="text-accent-green text-sm">Keyword search</span>
-        </div>
-      </div>
+      <Stack spacing={2} sx={{ mb: 3 }}>
+        <TextField
+          fullWidth
+          placeholder="Find the Items you're looking for"
+          value={keyword}
+          onChange={handleKeywordChange}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon color="primary" />
+              </InputAdornment>
+            ),
+          }}
+        />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Typography variant="caption" color="primary">
+            Keyword search
+          </Typography>
+        </Box>
+      </Stack>
 
       {/* Contents Filter */}
-      <div className="mb-6">
-        <div className="flex items-center mb-3">
-          <div className="w-3 h-3 bg-accent-green rounded-full mr-2"></div>
-          <h3 className="text-md font-medium text-white">Contents Filter</h3>
-        </div>
+      <Box sx={{ mb: 3 }}>
+        <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
+          <Box
+            sx={{
+              width: 12,
+              height: 12,
+              bgcolor: 'primary.main',
+              borderRadius: '50%',
+            }}
+          />
+          <Typography variant="subtitle1" color="text.primary">
+            Contents Filter
+          </Typography>
+        </Stack>
         
-        <div className="mb-4">
-          <label className="text-sm text-white mb-2 block">Pricing Option</label>
-          <div className="flex space-x-4">
-            <label className="flex items-center">
-              <input 
-                type="checkbox" 
-                className="mr-2 accent-accent-green"
-                checked={pricingOptions.includes(PricingOption.PAID)}
-                onChange={() => handlePricingToggle(PricingOption.PAID)}
+        <Stack spacing={2}>
+          <Box>
+            <Typography variant="body2" color="text.primary" sx={{ mb: 1 }}>
+              Pricing Option
+            </Typography>
+            <Stack direction="row" spacing={2}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={pricingOptions.includes(PricingOption.PAID)}
+                    onChange={() => handlePricingToggle(PricingOption.PAID)}
+                  />
+                }
+                label="Paid"
+                sx={{ color: 'text.primary' }}
               />
-              <span className="text-white">Paid</span>
-            </label>
-            <label className="flex items-center">
-              <input 
-                type="checkbox" 
-                className="mr-2 accent-accent-green"
-                checked={pricingOptions.includes(PricingOption.FREE)}
-                onChange={() => handlePricingToggle(PricingOption.FREE)}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={pricingOptions.includes(PricingOption.FREE)}
+                    onChange={() => handlePricingToggle(PricingOption.FREE)}
+                  />
+                }
+                label="Free"
+                sx={{ color: 'text.primary' }}
               />
-              <span className="text-white">Free</span>
-            </label>
-            <label className="flex items-center">
-              <input 
-                type="checkbox" 
-                className="mr-2 accent-accent-green"
-                checked={pricingOptions.includes(PricingOption.VIEW_ONLY)}
-                onChange={() => handlePricingToggle(PricingOption.VIEW_ONLY)}
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={pricingOptions.includes(PricingOption.VIEW_ONLY)}
+                    onChange={() => handlePricingToggle(PricingOption.VIEW_ONLY)}
+                  />
+                }
+                label="View Only"
+                sx={{ color: 'text.primary' }}
               />
-              <span className="text-white">View Only</span>
-            </label>
-          </div>
-        </div>
-        
-        {/* Pricing Slider - Only show when Paid option is selected */}
-        {pricingOptions.includes(PricingOption.PAID) && (
-          <div className="mb-4">
-            <label className="text-sm text-white mb-2 block">Price Range: ${priceRange[0]} - ${priceRange[1]}</label>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-300 text-sm">$0</span>
-              <input
-                type="range"
-                min="0"
-                max="999"
-                value={priceRange[1]}
-                onChange={handlePriceRangeChange}
-                className="flex-1 accent-accent-green"
-              />
-              <span className="text-gray-300 text-sm">$999+</span>
-            </div>
-          </div>
-        )}
-        
-        <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <label className="text-accent-green text-sm">Sort by:</label>
-            <select
-              value={sortBy}
-              onChange={handleSortChange}
-              className="bg-dark-bg border border-gray-600 rounded px-3 py-1 text-white text-sm focus:outline-none focus:border-accent-green"
+            </Stack>
+          </Box>
+          
+          {/* Pricing Slider - Only show when Paid option is selected */}
+          {pricingOptions.includes(PricingOption.PAID) && (
+            <Box>
+              <Typography variant="body2" color="text.primary" sx={{ mb: 1 }}>
+                Price Range: ${priceRange[0]} - ${priceRange[1]}
+              </Typography>
+              <Box sx={{ px: 2 }}>
+                <Slider
+                  value={priceRange[1]}
+                  onChange={handlePriceRangeChange}
+                  min={0}
+                  max={999}
+                  valueLabelDisplay="auto"
+                  valueLabelFormat={(value) => `$${value}`}
+                  sx={{
+                    color: 'primary.main',
+                  }}
+                />
+                <Stack direction="row" justifyContent="space-between" sx={{ mt: 1 }}>
+                  <Typography variant="caption" color="text.secondary">
+                    $0
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    $999+
+                  </Typography>
+                </Stack>
+              </Box>
+            </Box>
+          )}
+          
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Typography variant="body2" color="primary">
+                Sort by:
+              </Typography>
+              <Select
+                value={sortBy}
+                onChange={(e) => dispatch(setSortBy(e.target.value as SortOption))}
+                size="small"
+                sx={{ minWidth: 120 }}
+              >
+                <MenuItem value={SortOption.ITEM_NAME}>Item Name</MenuItem>
+                <MenuItem value={SortOption.HIGHER_PRICE}>Higher Price</MenuItem>
+                <MenuItem value={SortOption.LOWER_PRICE}>Lower Price</MenuItem>
+              </Select>
+            </Stack>
+            <Button
+              onClick={handleReset}
+              variant="text"
+              size="small"
+              sx={{ color: 'text.secondary' }}
             >
-              <option value={SortOption.ITEM_NAME}>Item Name</option>
-              <option value={SortOption.HIGHER_PRICE}>Higher Price</option>
-              <option value={SortOption.LOWER_PRICE}>Lower Price</option>
-            </select>
-          </div>
-          <button 
-            onClick={handleReset}
-            className="text-gray-400 hover:text-white transition-colors text-sm"
-          >
-            RESET
-          </button>
-        </div>
-      </div>
-    </div>
+              RESET
+            </Button>
+          </Stack>
+        </Stack>
+      </Box>
+    </Box>
   );
 };
 

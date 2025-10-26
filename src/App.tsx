@@ -1,6 +1,8 @@
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { store } from './store';
+import { theme } from './theme';
 import StorePage from './features/store/StorePage';
 
 // Create a client for React Query
@@ -19,9 +21,10 @@ function App() {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
-        <div className="min-h-screen bg-dark-bg text-white">
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
           <StorePage />
-        </div>
+        </ThemeProvider>
       </QueryClientProvider>
     </Provider>
   );

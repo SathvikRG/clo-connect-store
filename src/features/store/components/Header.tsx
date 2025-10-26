@@ -1,22 +1,35 @@
 import React from 'react';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-dark-bg border-b border-dark-border">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <div className="flex items-center">
-          <h1 className="text-2xl font-bold text-accent-blue">CONNECT</h1>
-        </div>
-        
-        {/* Required Feature Button */}
-        <div className="flex items-center">
-          <button className="bg-accent-green text-dark-bg px-4 py-2 rounded font-medium hover:bg-green-400 transition-colors">
-            REQUIRED FEATURE
-          </button>
-        </div>
-      </div>
-    </header>
+    <AppBar 
+      position="static" 
+      sx={{ 
+        bgcolor: 'background.default',
+        borderBottom: '1px solid',
+        borderColor: 'primary.main',
+      }}
+    >
+      <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <Typography variant="h5" component="h1" color="primary" fontWeight="bold">
+          CONNECT
+        </Typography>
+        <Button
+          variant="contained"
+          sx={{
+            bgcolor: 'primary.main',
+            color: 'black',
+            fontWeight: 'medium',
+            '&:hover': {
+              bgcolor: 'primary.dark',
+            },
+          }}
+        >
+          REQUIRED FEATURE
+        </Button>
+      </Toolbar>
+    </AppBar>
   );
 };
 

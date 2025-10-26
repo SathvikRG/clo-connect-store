@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Container, Box } from '@mui/material';
 import { type AppDispatch, type RootState } from '../../store';
 import { fetchStoreItems, filterItems } from '../../store/slices/storeSlice';
 import { usePersistence } from '../../hooks/usePersistence';
@@ -13,9 +14,6 @@ const StorePage: React.FC = () => {
   const { pricingOptions, keyword, sortBy, priceRange } = useSelector((state: RootState) => state.filters);
   const { saveToURL } = usePersistence();
 
-  // Debug: Log the filtered items
-  console.log('StorePage: filteredItems length:', filteredItems.length);
-  console.log('StorePage: filteredItems:', filteredItems);
 
   // Fetch initial data on component mount
   useEffect(() => {
@@ -33,19 +31,21 @@ const StorePage: React.FC = () => {
   }, [pricingOptions, keyword, sortBy, priceRange, saveToURL]);
 
   return (
-    <div className="min-h-screen bg-dark-bg">
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       {/* Header */}
       <Header />
       
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-6 space-y-6 max-w-7xl">
-        {/* Search and Filters Section */}
-        <SearchAndFilters />
-        
-        {/* Content Grid */}
-        <ContentGrid items={filteredItems} isLoading={ui.isLoading} />
-      </div>
-    </div>
+      <Container maxWidth="xl" sx={{ py: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          {/* Search and Filters Section */}
+          <SearchAndFilters />
+          
+          {/* Content Grid */}
+          <ContentGrid items={filteredItems} isLoading={ui.isLoading} />
+        </Box>
+      </Container>
+    </Box>
   );
 };
 
