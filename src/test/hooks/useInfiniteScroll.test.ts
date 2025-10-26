@@ -8,7 +8,6 @@ import storeReducer from '../../store/slices/storeSlice'
 import filterReducer from '../../store/slices/filterSlice'
 import { useInView } from 'react-intersection-observer'
 
-// Mock react-intersection-observer
 vi.mock('react-intersection-observer', () => {
   return {
     useInView: vi.fn(() => ({
@@ -17,8 +16,6 @@ vi.mock('react-intersection-observer', () => {
     })),
   }
 })
-
-// Mock the store actions
 vi.mock('../../../store/slices/storeSlice', async () => {
   const actual = await vi.importActual('../../../store/slices/storeSlice')
   return {
@@ -102,7 +99,6 @@ describe('useInfiniteScroll', () => {
   })
 
   it('dispatches fetchStoreItems when inView is true and conditions are met', () => {
-    // Set up inView to return true
     vi.mocked(useInView).mockReturnValueOnce({
       ref: null,
       inView: true,
@@ -110,7 +106,6 @@ describe('useInfiniteScroll', () => {
     
     const { result } = renderHookWithProvider(useInfiniteScroll, defaultState)
     
-    // When inView is true, it triggers dispatch which sets isLoading to true
     expect(result.current.ref).toBeNull()
     expect(result.current.isLoading).toBe(true)
     expect(result.current.hasMore).toBe(true)

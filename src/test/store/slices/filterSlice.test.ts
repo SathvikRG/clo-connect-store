@@ -18,7 +18,6 @@ describe('filterSlice', () => {
   }
 
   beforeEach(() => {
-    // Reset state before each test
   })
 
   describe('setPricingOptions', () => {
@@ -81,12 +80,10 @@ describe('filterSlice', () => {
       const action = togglePricingOption(PricingOption.PAID)
       const newState = filterReducer(stateWithPaid, action)
       
-      // Verify that PAID option is removed
       expect(newState.pricingOptions).not.toContain(PricingOption.PAID)
-      // Verify that price range is reset to default when PAID option is removed
       expect(newState.priceRange).toEqual([0, 999])
-      expect(stateWithPaid.pricingOptions).toContain(PricingOption.PAID) // Original should still have it
-      expect(stateWithPaid.priceRange).toEqual([100, 500]) // Original should still have custom range
+      expect(stateWithPaid.pricingOptions).toContain(PricingOption.PAID)
+      expect(stateWithPaid.priceRange).toEqual([100, 500])
     })
 
     it('does not reset price range when removing non-PAID option', () => {
@@ -99,9 +96,7 @@ describe('filterSlice', () => {
       const action = togglePricingOption(PricingOption.FREE)
       const newState = filterReducer(stateWithFree, action)
       
-      // Verify that FREE option is removed
       expect(newState.pricingOptions).not.toContain(PricingOption.FREE)
-      // Verify that price range is NOT reset when removing non-PAID option
       expect(newState.priceRange).toEqual([100, 500])
     })
   })

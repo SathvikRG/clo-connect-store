@@ -7,7 +7,6 @@ import storeReducer, {
 } from '../../../store/slices/storeSlice'
 import { PricingOption, SortOption } from '../../../types/index'
 
-// Mock the API
 vi.mock('../../../services/api', () => ({
   storeApi: {
     fetchStoreItemsPaginated: vi.fn(),
@@ -261,37 +260,39 @@ describe('storeSlice', () => {
       
       const newState = storeReducer(stateWithItems, action)
       
-      // Should return items unsorted (default case returns 0)
       expect(newState.filteredItems).toHaveLength(3)
     })
   })
 
   describe('fetchStoreItems async thunk', () => {
     it('handles fetching with default params', async () => {
-      // Test that fetchStoreItems can be called with undefined params (uses defaults)
-      const action = fetchStoreItems(undefined)
-      expect(action).toBeDefined()
-      
-      // Also test calling with empty object to hit line 9: `const { page = 1, limit = 20 } = params || {};`
-      const emptyAction = fetchStoreItems({})
-      expect(emptyAction).toBeDefined()
-    })
-
-    it('handles fetching with custom params', async () => {
-      // Import the mocked API
       const { storeApi } = await import('../../../services/api')
       
-      // Mock the API response
       vi.mocked(storeApi.fetchStoreItemsPaginated).mockResolvedValueOnce({
         items: [],
         hasMore: false,
       })
       
-      // Test that fetchStoreItems can be called with custom params
+      const action = fetchStoreItems(undefined)
+      expect(action).toBeDefined()
+      
+      const result = await action(vi.fn(), vi.fn(), vi.fn())
+      
+      expect(storeApi.fetchStoreItemsPaginated).toHaveBeenCalledWith(1, 20)
+      expect(result).toBeDefined()
+    })
+
+    it('handles fetching with custom params', async () => {
+      const { storeApi } = await import('../../../services/api')
+      
+      vi.mocked(storeApi.fetchStoreItemsPaginated).mockResolvedValueOnce({
+        items: [],
+        hasMore: false,
+      })
+      
       const action = fetchStoreItems({ page: 2, limit: 10 })
       expect(action).toBeDefined()
       
-      // This will execute the async thunk and test line 10-11 where response is returned
       const result = await action(vi.fn(), vi.fn(), vi.fn())
       
       expect(storeApi.fetchStoreItemsPaginated).toHaveBeenCalledWith(2, 10)
@@ -373,7 +374,6 @@ describe('storeSlice', () => {
       const newState = storeReducer(initialState, action)
       
       expect(newState.ui.isLoading).toBe(false)
-      // Should use fallback message when error.message is undefined
       expect(newState.error).toBe('Failed to fetch store items')
     })
 
@@ -391,7 +391,7 @@ describe('storeSlice', () => {
       const action = {
         type: fetchStoreItems.fulfilled.type,
         payload: {
-          items: [mockItems[0], mockItems[1]], // item-1 is duplicate
+          items: [mockItems[0], mockItems[1]],
           hasMore: true,
         },
       }

@@ -5,8 +5,6 @@ import SearchAndFilters from '../../components/SearchAndFilters'
 import storeReducer from '../../store/slices/storeSlice'
 import filterReducer from '../../store/slices/filterSlice'
 import { PricingOption, SortOption } from '../../types/index'
-
-// Mock store for testing
 const createMockStore = (initialState = {}) => {
   return configureStore({
     reducer: {
@@ -89,7 +87,6 @@ describe('SearchAndFilters', () => {
     const sortSelect = container.querySelector('.MuiSelect-root') as HTMLSelectElement
     expect(sortSelect).toBeInTheDocument()
     
-    // Get the native input and change its value
     const nativeInput = sortSelect.querySelector('.MuiSelect-nativeInput')
     if (nativeInput && nativeInput instanceof HTMLInputElement) {
       fireEvent.change(nativeInput, { target: { value: SortOption.HIGHER_PRICE } })
@@ -119,7 +116,7 @@ describe('SearchAndFilters', () => {
       filters: {
         ...defaultState.filters,
         pricingOptions: [PricingOption.PAID],
-        priceRange: [0, 500], // Set initial range
+        priceRange: [0, 500],
       },
     }
     
@@ -128,7 +125,6 @@ describe('SearchAndFilters', () => {
     const slider = screen.getAllByRole('slider')[0]
     fireEvent.change(slider, { target: { value: '500' } })
     
-    // The slider should update its value
     expect(slider).toHaveValue('500')
   })
 
@@ -148,7 +144,6 @@ describe('SearchAndFilters', () => {
     const resetButton = screen.getAllByText('RESET')[0]
     fireEvent.click(resetButton)
     
-    // After reset, keyword should be empty
     expect(screen.getByPlaceholderText("Find the Items you're looking for")).toHaveValue('')
   })
 
@@ -166,7 +161,6 @@ describe('SearchAndFilters', () => {
     const sortSelect = container.querySelector('.MuiSelect-root')
     expect(sortSelect).toBeInTheDocument()
     
-    // Verify the displayed text shows "Item Name"
     expect(screen.getByText('Item Name')).toBeInTheDocument()
   })
 })

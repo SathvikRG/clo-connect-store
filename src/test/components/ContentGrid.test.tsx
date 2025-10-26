@@ -7,7 +7,6 @@ import storeReducer from '../../store/slices/storeSlice'
 import filterReducer from '../../store/slices/filterSlice'
 import { type StoreItem, PricingOption } from '../../types/index'
 
-// Mock the useInfiniteScroll hook
 vi.mock('../../hooks/useInfiniteScroll', () => {
   return {
     useInfiniteScroll: vi.fn(() => ({
@@ -85,7 +84,6 @@ describe('ContentGrid', () => {
   it('renders loading skeleton when isLoading is true', () => {
     renderWithProvider(<ContentGrid items={[]} isLoading={true} />, defaultState)
     
-    // Check for skeleton elements - Material-UI Skeleton components
     const skeletonElements = document.querySelectorAll('.MuiSkeleton-root')
     expect(skeletonElements.length).toBeGreaterThan(0)
   })
@@ -116,7 +114,6 @@ describe('ContentGrid', () => {
     
     renderWithProvider(<ContentGrid items={itemWithUnknownPricing} isLoading={false} />, defaultState)
     
-    // Should default to "View Only"
     expect(screen.getByText('View Only')).toBeInTheDocument()
   })
 
@@ -141,10 +138,8 @@ describe('ContentGrid', () => {
     const images = screen.getAllByRole('img')
     expect(images[0]).toHaveAttribute('src', 'invalid-url')
     
-    // Trigger error event to test onError handler
     fireEvent.error(images[0])
     
-    // After error, the image src should be replaced with the placeholder SVG
     const imgElement = images[0] as HTMLImageElement
     expect(imgElement.src).toContain('data:image/svg+xml')
   })
@@ -152,14 +147,12 @@ describe('ContentGrid', () => {
   it('renders empty state when no items', () => {
     renderWithProvider(<ContentGrid items={[]} isLoading={false} />, defaultState)
     
-    // Should not show any item content
     expect(screen.queryByText('Amazing Outfit')).not.toBeInTheDocument()
   })
 
   it('applies correct CSS classes for responsive grid', () => {
     renderWithProvider(<ContentGrid items={mockItems} isLoading={false} />, defaultState)
     
-    // Find the grid container by looking for the Box with display:grid
     const gridContainer = document.querySelector('.MuiBox-root')
     expect(gridContainer).toBeInTheDocument()
   })
@@ -179,7 +172,6 @@ describe('ContentGrid', () => {
   })
 
   it('shows loading spinner when infiniteLoading is true', () => {
-    // Mock the hook to return isLoading: true (this maps to infiniteLoading)
     vi.mocked(useInfiniteScroll).mockReturnValueOnce({
       ref: null,
       isLoading: true,
@@ -200,7 +192,6 @@ describe('ContentGrid', () => {
   })
 
   it('shows end of results when hasMore is false', () => {
-    // Mock the hook to return hasMore: false
     vi.mocked(useInfiniteScroll).mockReturnValueOnce({
       ref: null,
       isLoading: false,
@@ -209,7 +200,6 @@ describe('ContentGrid', () => {
     
     renderWithProvider(<ContentGrid items={mockItems} isLoading={false} />, defaultState)
     
-    // The component should show "No more items to load" when hasMore is false
     expect(screen.getByText('No more items to load')).toBeInTheDocument()
   })
 })

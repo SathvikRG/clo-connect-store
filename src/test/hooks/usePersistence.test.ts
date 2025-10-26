@@ -8,7 +8,6 @@ import storeReducer from '../../store/slices/storeSlice'
 import filterReducer from '../../store/slices/filterSlice'
 import { PricingOption, SortOption } from '../../types/index'
 
-// Mock window.history
 const mockReplaceState = vi.fn()
 Object.defineProperty(window, 'history', {
   value: {
@@ -16,8 +15,6 @@ Object.defineProperty(window, 'history', {
   },
   writable: true,
 })
-
-// Mock window.location
 const mockLocation = {
   href: 'http://localhost:3000',
   search: '',
@@ -46,10 +43,16 @@ const renderHookWithProvider = (hook: () => unknown, initialState = {}) => {
 }
 
 describe('usePersistence', () => {
+  const originalLocation = window.location
+  
   beforeEach(() => {
     vi.clearAllMocks()
     mockLocation.href = 'http://localhost:3000'
     mockLocation.search = ''
+  })
+
+  afterEach(() => {
+    window.location = originalLocation
   })
 
   it('provides saveToURL function', () => {
@@ -216,5 +219,121 @@ describe('usePersistence', () => {
       '',
       expect.stringContaining('pricing=')
     )
+  })
+
+  describe('URL parsing on mount', () => {
+    it('loads pricing options from URL (line 17-19)', () => {
+      mockLocation.search = '?pricing=["0","1"]'
+      
+      const store = createMockStore({})
+      const wrapper = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(Provider, { store }, children)
+      }
+      
+      renderHook(() => usePersistence(), { wrapper })
+      
+      // The pricing options should be loaded
+      const state = store.getState()
+      expect(state.filters.pricingOptions).toBeDefined()
+    })
+
+    it('handles invalid JSON in pricing param (line 17-21)', () => {
+      mockLocation.search = '?pricing=invalid-json'
+      
+      const store = createMockStore({})
+      const wrapper = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(Provider, { store }, children)
+      }
+      
+      renderHook(() => usePersistence(), { wrapper })
+      
+      // Should handle the error gracefully
+      expect(mockLocation.search).toBe('?pricing=invalid-json')
+    })
+
+    it('loads keyword from URL (line 28)', () => {
+      mockLocation.search = '?keyword=test+search'
+      
+      const store = createMockStore({})
+      const wrapper = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(Provider, { store }, children)
+      }
+      
+      renderHook(() => usePersistence(), { wrapper })
+      
+      // The keyword should be loaded
+      const state = store.getState()
+      expect(state.filters.keyword).toBe('test search')
+    })
+
+    it('loads sortBy from URL (line 34)', () => {
+      mockLocation.search = '?sortBy=higherPrice'
+      
+      const store = createMockStore({})
+      const wrapper = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(Provider, { store }, children)
+      }
+      
+      renderHook(() => usePersistence(), { wrapper })
+      
+      // The sortBy should be loaded
+      const state = store.getState()
+      expect(state.filters.sortBy).toBe('higherPrice')
+    })
+
+    it('loads price range from URL (line 41-45)', () => {
+      mockLocation.search = '?priceMin=100&priceMax=500'
+      
+      const store = createMockStore({})
+      const wrapper = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(Provider, { store }, children)
+      }
+      
+      renderHook(() => usePersistence(), { wrapper })
+      
+      // The price range should be loaded
+      const state = store.getState()
+      expect(state.filters.priceRange).toEqual([100, 500])
+    })
+
+    it('handles invalid price range (NaN) (line 44-45)', () => {
+      mockLocation.search = '?priceMin=invalid&priceMax=500'
+      
+      const store = createMockStore({})
+      const wrapper = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(Provider, { store }, children)
+      }
+      
+      renderHook(() => usePersistence(), { wrapper })
+      
+      const state = store.getState()
+      expect(state.filters.priceRange).toEqual([0, 999])
+    })
+
+    it('handles price range parsing error (line 48)', () => {
+      const originalParseInt = global.parseInt
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+      
+      global.parseInt = vi.fn(() => {
+        throw new Error('Parse error')
+      })
+      
+      mockLocation.search = '?priceMin=100&priceMax=500'
+      
+      const store = createMockStore({})
+      const wrapper = ({ children }: { children: React.ReactNode }) => {
+        return React.createElement(Provider, { store }, children)
+      }
+      
+      renderHook(() => usePersistence(), { wrapper })
+      
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Failed to parse price range from URL:',
+        expect.any(Error)
+      )
+      
+      global.parseInt = originalParseInt
+      consoleErrorSpy.mockRestore()
+    })
   })
 })
