@@ -1,8 +1,8 @@
-import { useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { type AppDispatch } from '../store';
-import { setPricingOptions, setKeyword, setSortBy, setPriceRange } from '../store/slices/filterSlice';
-import { PricingOption, SortOption } from '../types/index';
+import { useEffect, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { type AppDispatch } from '../store'
+import { setPricingOptions, setKeyword, setSortBy, setPriceRange } from '../store/slices/filterSlice'
+import { PricingOption, SortOption } from '../types/index'
 
 export const usePersistence = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,7 +18,7 @@ export const usePersistence = () => {
         const pricingOptions = JSON.parse(pricingParam) as PricingOption[];
         dispatch(setPricingOptions(pricingOptions));
       } catch (error) {
-        console.error('Failed to parse pricing options from URL:', error);
+        console.error('Failed to parse pricing options from URL:', error)
       }
     }
     
@@ -45,7 +45,7 @@ export const usePersistence = () => {
           dispatch(setPriceRange([min, max]));
         }
       } catch (error) {
-        console.error('Failed to parse price range from URL:', error);
+        console.error('Failed to parse price range from URL:', error)
       }
     }
   }, [dispatch]);
@@ -90,8 +90,8 @@ export const usePersistence = () => {
     }
     
     // Update URL without page reload
-    window.history.replaceState({}, '', url.toString());
+    window.history.replaceState({}, '', url.toString())
   }, []);
 
-  return { saveToURL };
+  return { saveToURL }
 };

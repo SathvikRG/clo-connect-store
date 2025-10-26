@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Box,
   Typography,
@@ -12,34 +12,34 @@ import {
   Stack,
   Slider,
   InputAdornment,
-} from '@mui/material';
-import { Search as SearchIcon } from '@mui/icons-material';
+} from '@mui/material'
+import { Search as SearchIcon } from '@mui/icons-material'
 
-import { type AppDispatch, type RootState } from '../../../store';
-import { togglePricingOption, resetFilters, setKeyword, setSortBy, setPriceRange } from '../../../store/slices/filterSlice';
-import { PricingOption, SortOption } from '../../../types/index';
+import { type AppDispatch, type RootState } from '../../../store'
+import { togglePricingOption, resetFilters, setKeyword, setSortBy, setPriceRange } from '../../../store/slices/filterSlice'
+import { PricingOption, SortOption } from '../../../types/index'
 
 const SearchAndFilters: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { pricingOptions, keyword, sortBy, priceRange } = useSelector((state: RootState) => state.filters);
 
   const handlePricingToggle = (option: PricingOption) => {
-    dispatch(togglePricingOption(option));
+    dispatch(togglePricingOption(option))
   };
 
   const handleReset = () => {
-    dispatch(resetFilters());
+    dispatch(resetFilters())
   };
 
   const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setKeyword(e.target.value));
+    dispatch(setKeyword(e.target.value))
   };
 
   const handlePriceRangeChange = (_: Event, newValue: number | number[]) => {
     const value = newValue as number[];
     const [min, max] = value;
     const newRange: [number, number] = [Math.min(min, max), Math.max(min, max)];
-    dispatch(setPriceRange(newRange));
+    dispatch(setPriceRange(newRange))
   };
 
   return (
@@ -196,4 +196,4 @@ const SearchAndFilters: React.FC = () => {
   );
 };
 
-export default SearchAndFilters;
+export default SearchAndFilters

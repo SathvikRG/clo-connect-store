@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   Box,
   Typography,
@@ -9,10 +9,10 @@ import {
   CircularProgress,
   Skeleton,
   Stack,
-} from '@mui/material';
+} from '@mui/material'
 
-import { type StoreItem, PricingOption } from '../../../types/index';
-import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
+import { type StoreItem, PricingOption } from '../../../types/index'
+import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll'
 
 interface ContentGridProps {
   items: StoreItem[];
@@ -42,9 +42,9 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
       case PricingOption.FREE:
         return 'FREE';
       case PricingOption.VIEW_ONLY:
-        return 'View Only';
+        return 'View Only'
       default:
-        return 'View Only';
+        return 'View Only'
     }
   };
 
@@ -143,4 +143,4 @@ const ContentGrid: React.FC<ContentGridProps> = ({ items, isLoading }) => {
   );
 };
 
-export default ContentGrid;
+export default ContentGrid

@@ -1,5 +1,5 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography } from '@mui/material';
+import React from 'react'
+import { AppBar, Toolbar, Typography } from '@mui/material'
 
 const Header: React.FC = () => {
   return (
@@ -20,4 +20,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default Header

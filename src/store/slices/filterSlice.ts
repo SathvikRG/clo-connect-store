@@ -1,5 +1,5 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { PricingOption, type FilterState, SortOption } from '../../types/index';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { PricingOption, type FilterState, SortOption } from '../../types/index'
 
 // Initial state
 const initialState: FilterState = {
@@ -16,7 +16,7 @@ const filterSlice = createSlice({
   reducers: {
     // Update pricing options filter
     setPricingOptions: (state, action: PayloadAction<PricingOption[]>) => {
-      state.pricingOptions = action.payload;
+      state.pricingOptions = action.payload
     },
     
     // Toggle individual pricing option
@@ -30,27 +30,27 @@ const filterSlice = createSlice({
         
         // If removing PAID option, reset price range to default
         if (option === PricingOption.PAID) {
-          state.priceRange = [0, 999];
-        }
+        state.priceRange = [0, 999]
+      }
       } else {
         // Add if not selected
-        state.pricingOptions.push(option);
+        state.pricingOptions.push(option)
       }
     },
     
     // Update keyword search
     setKeyword: (state, action: PayloadAction<string>) => {
-      state.keyword = action.payload;
+      state.keyword = action.payload
     },
     
     // Update price range
     setPriceRange: (state, action: PayloadAction<[number, number]>) => {
-      state.priceRange = action.payload;
+      state.priceRange = action.payload
     },
     
     // Update sort option
     setSortBy: (state, action: PayloadAction<SortOption>) => {
-      state.sortBy = action.payload;
+      state.sortBy = action.payload
     },
     
     // Reset all filters to default state
@@ -58,7 +58,7 @@ const filterSlice = createSlice({
       state.pricingOptions = [];
       state.keyword = '';
       state.priceRange = [0, 999];
-      state.sortBy = SortOption.ITEM_NAME;
+      state.sortBy = SortOption.ITEM_NAME
     },
   },
 });
@@ -70,6 +70,6 @@ export const {
   setPriceRange,
   setSortBy,
   resetFilters,
-} = filterSlice.actions;
+} = filterSlice.actions
 
-export default filterSlice.reducer;
+export default filterSlice.reducer

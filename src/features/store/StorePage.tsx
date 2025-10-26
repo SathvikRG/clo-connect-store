@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Container, Box } from '@mui/material';
-import { type AppDispatch, type RootState } from '../../store';
-import { fetchStoreItems, filterItems } from '../../store/slices/storeSlice';
-import { usePersistence } from '../../hooks/usePersistence';
-import Header from './components/Header';
-import SearchAndFilters from './components/SearchAndFilters';
-import ContentGrid from './components/ContentGrid';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Container, Box } from '@mui/material'
+import { type AppDispatch, type RootState } from '../../store'
+import { fetchStoreItems, filterItems } from '../../store/slices/storeSlice'
+import { usePersistence } from '../../hooks/usePersistence'
+import Header from './components/Header'
+import SearchAndFilters from './components/SearchAndFilters'
+import ContentGrid from './components/ContentGrid'
 
 const StorePage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,17 +16,17 @@ const StorePage: React.FC = () => {
 
   // Initial data fetch
   useEffect(() => {
-    dispatch(fetchStoreItems({ page: 1, limit: 20 }));
+    dispatch(fetchStoreItems({ page: 1, limit: 20 }))
   }, [dispatch]);
 
   // Filter items when filters change
   useEffect(() => {
-    dispatch(filterItems({ pricingOptions, keyword, sortBy, priceRange }));
+    dispatch(filterItems({ pricingOptions, keyword, sortBy, priceRange }))
   }, [dispatch, pricingOptions, keyword, sortBy, priceRange]);
 
   // Save filters to URL when they change
   useEffect(() => {
-    saveToURL(pricingOptions, keyword, sortBy, priceRange);
+    saveToURL(pricingOptions, keyword, sortBy, priceRange)
   }, [pricingOptions, keyword, sortBy, priceRange, saveToURL]);
 
   return (
@@ -48,4 +48,4 @@ const StorePage: React.FC = () => {
   );
 };
 
-export default StorePage;
+export default StorePage

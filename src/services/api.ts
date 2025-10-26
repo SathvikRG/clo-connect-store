@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { type StoreItem } from '../types/index';
+import axios from 'axios'
+import { type StoreItem } from '../types/index'
 
 // Create axios instance with base configuration
 const api = axios.create({
@@ -14,8 +14,8 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => config,
   (error) => {
-    console.error('Request Error:', error);
-    return Promise.reject(error);
+    console.error('Request Error:', error)
+    return Promise.reject(error)
   }
 );
 
@@ -23,8 +23,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error('API Error:', error.response?.data || error.message);
-    return Promise.reject(error);
+    console.error('API Error:', error.response?.data || error.message)
+    return Promise.reject(error)
   }
 );
 
@@ -44,12 +44,12 @@ export const storeApi = {
       const items = allItems.slice(startIndex, endIndex);
       const hasMore = endIndex < allItems.length;
 
-      return { items, hasMore };
+      return { items, hasMore }
     } catch (error) {
-      console.error('Failed to fetch paginated store items:', error);
-      throw error;
+      console.error('Failed to fetch paginated store items:', error)
+      throw error
     }
   },
 };
 
-export default api;
+export default api

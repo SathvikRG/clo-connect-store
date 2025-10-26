@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import { type StoreItem, type UIState, PricingOption } from '../../types/index';
-import { storeApi } from '../../services/api';
+import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit'
+import { type StoreItem, type UIState, PricingOption } from '../../types/index'
+import { storeApi } from '../../services/api'
 
 // Async thunk for fetching store items
 export const fetchStoreItems = createAsyncThunk(
@@ -8,7 +8,7 @@ export const fetchStoreItems = createAsyncThunk(
   async (params?: { page?: number; limit?: number }) => {
     const { page = 1, limit = 20 } = params || {};
     const response = await storeApi.fetchStoreItemsPaginated(page, limit);
-    return response;
+    return response
   }
 );
 
@@ -45,7 +45,7 @@ const storeSlice = createSlice({
             hasMore: true,
             currentPage: 1,
           };
-          state.error = null;
+          state.error = null
         },
     
     // Filter items based on pricing options, keyword, sort, and price range
@@ -64,7 +64,7 @@ const storeSlice = createSlice({
             return item.price >= priceRange[0] && item.price <= priceRange[1];
           }
           
-          return true;
+          return true
         });
       }
       
@@ -91,12 +91,12 @@ const storeSlice = createSlice({
         }
       });
       
-      state.filteredItems = filtered;
+      state.filteredItems = filtered
     },
     
     // Clear error
     clearError: (state) => {
-      state.error = null;
+      state.error = null
     },
   },
   extraReducers: (builder) => {
@@ -104,7 +104,7 @@ const storeSlice = createSlice({
       // Fetch store items
       .addCase(fetchStoreItems.pending, (state) => {
         state.ui.isLoading = true;
-        state.error = null;
+        state.error = null
       })
       .addCase(fetchStoreItems.fulfilled, (state, action) => {
         state.ui.isLoading = false;
@@ -129,14 +129,14 @@ const storeSlice = createSlice({
           state.filteredItems = uniqueItems;
         }
         
-        state.ui.currentPage += 1;
+        state.ui.currentPage += 1
       })
       .addCase(fetchStoreItems.rejected, (state, action) => {
         state.ui.isLoading = false;
-        state.error = action.error.message || 'Failed to fetch store items';
+        state.error = action.error.message || 'Failed to fetch store items'
       });
   },
 });
 
-export const { resetStore, filterItems, clearError } = storeSlice.actions;
-export default storeSlice.reducer;
+export const { resetStore, filterItems, clearError } = storeSlice.actions
+export default storeSlice.reducer
