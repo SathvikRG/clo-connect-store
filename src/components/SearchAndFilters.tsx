@@ -114,9 +114,11 @@ const SearchAndFilters: React.FC = () => {
             />
             {/* Inline Price Slider */}
             {pricingOptions.includes(PricingOption.PAID) && (
-              <Box sx={{ minWidth: 150 }}>
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+              <>
+                <Box sx={{ width: 16 }} />
+                <Box sx={{ minWidth: 150 }}>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem', minWidth: 15 }}>
                     $0
                   </Typography>
                   <Slider
@@ -131,14 +133,15 @@ const SearchAndFilters: React.FC = () => {
                     sx={{
                       color: '#87CEEB',
                       height: 3,
-                      flex: 1,
+                      flex: 1
                     }}
                   />
                   <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
                     $999
                   </Typography>
                 </Stack>
-              </Box>
+                </Box>
+              </>
             )}
           </Stack>
 
