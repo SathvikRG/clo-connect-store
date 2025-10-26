@@ -4,7 +4,7 @@ export const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#00ff88', // accent-green
+      main: '#666666', // neutral grey
     },
     secondary: {
       main: '#00bfff', // accent-blue
@@ -35,10 +35,10 @@ export const theme = createTheme({
               borderColor: '#666666',
             },
             '&:hover fieldset': {
-              borderColor: '#00ff88',
+              borderColor: '#888888',
             },
             '&.Mui-focused fieldset': {
-              borderColor: '#00ff88',
+              borderColor: '#888888',
             },
           },
         },
@@ -47,9 +47,9 @@ export const theme = createTheme({
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          color: '#00ff88',
+          color: '#cccccc',
           '&.Mui-checked': {
-            color: '#00ff88',
+            color: '#ffffff',
           },
         },
       },
@@ -62,10 +62,10 @@ export const theme = createTheme({
             borderColor: '#666666',
           },
           '&:hover fieldset': {
-            borderColor: '#00ff88',
+            borderColor: '#888888',
           },
           '&.Mui-focused fieldset': {
-            borderColor: '#00ff88',
+            borderColor: '#888888',
           },
         },
       },
